@@ -3,8 +3,18 @@
 #include <math.h>
 #include <time.h>
 #include <stdbool.h>
+#include <sys/time.h>
 
 #include "Practica1.h"
+
+/* obtiene la hora actual en microsegundos */
+double microsegundos()
+{
+    struct timeval t;
+    if (gettimeofday(&t, NULL) < 0)
+        return 0.0;
+    return (t.tv_usec + t.tv_sec * 1000000.0);
+}
 
 void printArray(int *a, int n){
     // 'a' Array a printear.
