@@ -31,7 +31,7 @@ void generarSecuenciaFib(int *a, int n, int (*algoritmo)(int));
 
 void testFibs();
 
-double medirTiempo(int (*fib)(int n), int n);
+double medirTiempo(int (*fib)(int n), int n, char *micro);
 
 void printearCotas(algoritmoFib args,void (*cotas)
 (double t,double n,double *sub, double *sob, double *aj));
