@@ -1,6 +1,6 @@
 Autores: Lucía Boullosa Álvarez, Nerea Pena Carbajales, Javier Fernández Otero
 ------------------------------------------------------------------------------
-Introduccion:
+Introduccion: 
 ------------------------------------------------------------------------------
 Aclaraciones:
     - Todos los resultados de tiempos mostrados en las tablas aparecen representados en microsegundos (µs)
@@ -47,9 +47,9 @@ Tablas de resultados Fibonacci V2
       100000000 |                0.165970 |                0.004169 |                0.000226 |           416898.000000 |
 ------------------------------------------------------------------------------
 Información (Fibonacci V2)
-    - Cota subestimada:
-    - Cota ajustada:
-    - Cota sobreestimada:
+    - Cota subestimada: n^0.8 | tiende a infinito
+    - Cota ajustada: n | se mantiene
+    - Cota sobreestimada: n*log(n) | tiende a 0
 ------------------------------------------------------------------------------
 Tablas de resultados Fibonacci V3
                                                          --Fibonacci V3-- 
@@ -68,5 +68,9 @@ Información (Fibonacci V3)
     - Cota subestimada:
     - Cota ajustada:
     - Cota sobreestimada:
+
+Este algoritmo tiene una complejidad de 0(log n). Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica que el 
+resultado es inferior al umbral (500µs), y por ello se calcula un promedio.
+En este caso en especifico, el promedio se calcula en todos los vectores
 ------------------------------------------------------------------------------
 Conclusiones:
