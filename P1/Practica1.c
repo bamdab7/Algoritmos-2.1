@@ -26,8 +26,8 @@ void cotasFib1(double t, double n, double* sub, double* sob, double* aj) {
 }
 
 int fib_2(int n) {
-    int i = 1, j = 0;
-    for (int k = 0; k < n; k++) {
+    int i = 1, j = 0, k = 0;
+    for (k = 0; k < n; k++) {
         j = i + j;
         i = j - i;
     }
