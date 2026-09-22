@@ -112,7 +112,7 @@ double medirTiempo(int(*fib)(int n),int n,char * micro){
     double t1 = 0, t2 = 0, t = 0 ;
     int i = 0, k = 1000;
     t1 = microsegundos();
-     fib(n);
+    fib(n);
     t2 = microsegundos();
     strcpy(micro, " ");
     t = t2 - t1;
@@ -155,7 +155,7 @@ int main() {
     algoritmoFib FIB_1 = {.n = {2,4,8,16,32}};
     FIB_1.size = 5;
     FIB_1.fib = fib_1;
-    strcpy(FIB_1.nombre,"--Feibonacci V1--");
+    strcpy(FIB_1.nombre,"--Fibonacci V1--");
     strcpy(FIB_1.sobreestimada, "(1.1)^n");
     strcpy(FIB_1.ajustada, "(φ)^n");
     strcpy(FIB_1.subestimada, "2^n");

@@ -1,0 +1,72 @@
+Autores: Lucía Boullosa Álvarez, Nerea Pena Carbajales, Javier Fernández Otero
+------------------------------------------------------------------------------
+Introduccion:
+------------------------------------------------------------------------------
+Aclaraciones:
+    - Todos los resultados de tiempos mostrados en las tablas aparecen representados en microsegundos (µs)
+    - Para medir tiempos pequeños de manera precisa utilizamos el umbral de confianza de 500µs. En caso de la que 
+    la medición de X vector sea menor al umbral, es repetida 1000 veces para minimizar los posibles errores, 
+    hallando el promedio de tiempo de una iteración.
+    - En la tabla, los tiempos a los que se les realizó este proceso aparecen junto a un (*). Esa marca se determina 
+    de forma automática durante la ejecución, comparando cada medición individual con el umbral.
+------------------------------------------------------------------------------
+Características del ordenador:
+------------------------------------------------------------------------------
+Tablas de resultados Fibonacci V1
+                                                        --Fibonacci V1-- 
+
+           Size |   Cota:            2^n  |  Cota:          (φ)^n   |   Cota:        (1.1)^n  |                 Tiempo  |
+                |                         |                         |                         |                         |
+ *            2 |                0.015702 |                0.007257 |                0.004750 |                0.019000 |
+ *            4 |                0.171436 |                0.036620 |                0.015688 |                0.251000 |
+ *            8 |                0.215526 |                0.009834 |                0.001805 |                0.462000 |
+ *           16 |                4.087728 |                0.008511 |                0.000287 |               18.783000 |
+             32 |             1637.082764 |                0.007096 |                0.000008 |            34565.000000 |
+------------------------------------------------------------------------------
+Información (Fibonacci V1)
+    - Cota subestimada: (1.1)^n | tiende a infinito.
+    - Cota ajustada: φ^n | Se mantiene (dentro del margen de ruido esperado para n pequeño)
+    - Cota sobreestimada:  2^n | tiende a 0
+
+Este algoritmo tiene una complejidad de 0(φ^n), donde φ = (1+√5)/2 se calcula de forma exacta se calcula de forma exacta en
+el código (no como aproximación). Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica que el 
+resultado es inferior al umbral (500µs), y por ello se calcula un promedio.
+Al tratarse de tamaños de entrada muy pequeños (n entre 2 y 32), la columna de la cota ajustada presenta mas ruido de medición
+que en los otros dos algoritmos, donde n es mucho mayor.
+------------------------------------------------------------------------------
+Tablas de resultados Fibonacci V2
+                                                         --Fibonacci V2-- 
+
+           Size |   Cota:       n*log(n)  |  Cota:               n  |   Cota:  (pow(n, 0.8))  |                 Tiempo  |
+                |                         |                         |                         |                         |
+ *         1000 |                0.018094 |                0.004545 |                0.000658 |                4.545000 |
+ *        10000 |                0.021907 |                0.003472 |                0.000377 |               34.720000 |
+ *       100000 |                0.033887 |                0.003389 |                0.000294 |              338.873000 |
+        1000000 |                0.054029 |                0.003409 |                0.000247 |             3409.000000 |
+       10000000 |                0.100443 |                0.003999 |                0.000248 |            39987.000000 |
+      100000000 |                0.165970 |                0.004169 |                0.000226 |           416898.000000 |
+------------------------------------------------------------------------------
+Información (Fibonacci V2)
+    - Cota subestimada:
+    - Cota ajustada:
+    - Cota sobreestimada:
+------------------------------------------------------------------------------
+Tablas de resultados Fibonacci V3
+                                                         --Fibonacci V3-- 
+
+           Size |   Cota:     pow(n,0.5)  |  Cota:           log n  |   Cota: sqrt((log(n)))  |                 Tiempo  |
+                |                         |                         |                         |                         |
+ *         1000 |                0.031580 |                0.012015 |                0.002625 |                0.083000 |
+ *        10000 |                0.035257 |                0.011617 |                0.001070 |                0.107000 |
+ *       100000 |                0.039787 |                0.011726 |                0.000427 |                0.135000 |
+ *      1000000 |                0.047620 |                0.012812 |                0.000177 |                0.177000 |
+ *     10000000 |                0.050066 |                0.012470 |                0.000064 |                0.201000 |
+ *    100000000 |                0.058016 |                0.013517 |                0.000025 |                0.249000 |
+ *   1000000000 |                0.063265 |                0.013897 |                0.000009 |                0.288000 |
+------------------------------------------------------------------------------
+Información (Fibonacci V3)
+    - Cota subestimada:
+    - Cota ajustada:
+    - Cota sobreestimada:
+------------------------------------------------------------------------------
+Conclusiones:
