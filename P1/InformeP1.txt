@@ -1,51 +1,65 @@
 Autores: Lucía Boullosa Álvarez, Nerea Pena Carbajales, Javier Fernández Otero
 ------------------------------------------------------------------------------
-Introduccion: 
-    - En esta práctica, mediremos mediante tres algoritmos de cálculo del termino n-ésimo de Fibonacci.
-        - El primer algoritmo es recursivo, con complejidad O(φ^n) donde φ = (1+√5)/2
-        - El segundo algoritmo es iterativo, 0(n)
-        - El tercer algoritmo está basado en "fast doubling", 0(log n)
-Los tamaños de entada varian segun el algoritmo, dado que sus complejidades son muy distintas entre si: valores pequeños
-para el algoritmo recursivo y valores en progresión geométrica de razón diez para los algoritmos iterativo y de fast
-doubling.
+Introduccion:
+En esta práctica se nos pidió implementar y estudiar tres algoritmos distintos para el cálculo del término n-ésimo de 
+la secuencia de Fibonacci, cada uno basado en una técnica diferente: recursión directa, iteración y "fast doubling".
+
+El objetivo del estudio es analizar de forma empírica el comportamiento de cada algoritmo a medida que crece el tamaño de la 
+entrada, contrastando los tiempos de ejecución medidos frente a distintas cotas teóricas (subestimada, ajustada y sobreestimada),
+para comprobar si el comportamiento real se corresponde con la complejidad asintítica de cada uno.
 ------------------------------------------------------------------------------
 Aclaraciones:
     - Todos los resultados de tiempos mostrados en las tablas aparecen representados en microsegundos (µs)
-    - Para medir tiempos pequeños de manera precisa utilizamos el umbral de confianza de 500 µs. En caso de la que 
-    la medición de X vector sea menor al umbral, es repetida 1000 veces para minimizar los posibles errores, 
-    hallando el promedio de tiempo de una iteración.
+    - Para medir tiempos pequeños de forma precisa, se utiliza un umbral de confianza de 500 µs. Si la medición para un valor
+    de n es inferior a dicho umbral, la ejecución se repite 100 veces y se calcula el tiempo promedio de una ejecución,
+    minimizando así los posibles errores.
     - En la tabla, los tiempos a los que se les realizó este proceso aparecen junto a un (*). Esa marca se determina 
     de forma automática durante la ejecución, comparando cada medición individual con el umbral.
 ------------------------------------------------------------------------------
-Características del ordenador: *insertar info del ordenador que obtenga mejores resultados, pendiente*
+Características del ordenador:
+    - Memoria: 16,0 GiB
+    - Procesador: 13th Gen Intel® Core™ i5-13420H × 12
+    - Sistema operativo: Ubuntu 24.04.3 LTS
 ------------------------------------------------------------------------------
-Tablas de resultados Fibonacci V1
-                                                        --Fibonacci V1-- 
-
-                |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
-           Size |   Cota:            2^n  |  Cota:         (phi)^n  |   Cota:        (1.1)^n  |                 Tiempo  |
-                |                         |                         |                         |                         |
- *            2 |                0.014876 |                0.006875 |                0.004500 |                0.018000 |
- *            4 |                0.036883 |                0.007878 |                0.003375 |                0.054000 |
- *            8 |                0.184737 |                0.008429 |                0.001547 |                0.396000 |
- *           16 |                3.825703 |                0.007965 |                0.000268 |               17.579000 |
-             32 |             1533.501106 |                0.006647 |                0.000008 |            32378.000000 |
-------------------------------------------------------------------------------
-Información (Fibonacci V1)
-    - Cota subestimada: (1.1)^n | tiende a infinito.
-    - Cota ajustada: φ^n | Se mantiene (dentro del margen de ruido esperado para n pequeño)
-    - Cota sobreestimada:  2^n | tiende a 0
+Información Fibonacci V1 (algoritmo recursivo)
 
 Este algoritmo tiene una complejidad de 0(φ^n), donde φ = (1+√5)/2 se calcula de forma exacta se calcula de forma exacta en
 el código (no como aproximación). Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica que el 
 resultado es inferior al umbral (500 µs), y por ello se calcula un promedio.
 Al tratarse de tamaños de entrada muy pequeños (n entre 2 y 32), la columna de la cota ajustada presenta mas ruido de medición
 que en los otros dos algoritmos, donde n es mucho mayor.
+
+    - Cota subestimada: (1.1)^n | tiende a infinito.
+    - Cota ajustada: φ^n | Se mantiene (dentro del margen de ruido esperado para n pequeño)
+    - Cota sobreestimada:  2^n | tiende a 0
+------------------------------------------------------------------------------
+Tablas de resultados Fibonacci V1
+                                                        --Fibonacci V1-- 
+
+                |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
+           Size |   Cota:        (1.1)^n  |  Cota:         (phi)^n  |   Cota:            2^n  |                 Tiempo  |
+                |                         |                         |                         |                         |
+ *            2 |                0.011570 |                0.005348 |                0.003500 |                0.014000 |
+ *            4 |                0.026638 |                0.005690 |                0.002437 |                0.039000 |
+ *            8 |                0.132022 |                0.006024 |                0.001105 |                0.283000 |
+ *           16 |                3.325156 |                0.006923 |                0.000233 |               15.279000 |
+             32 |             1611.601771 |                0.006986 |                0.000008 |            34027.000000 |
+------------------------------------------------------------------------------
+Información Fibonacci V2 (algoritmo iterativo)
+
+Este algoritmo tiene una complejidad de 0(n).Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica 
+que el resultado es inferior al umbral (500 µs), y por ello se calcula un promedio.
+En este caso, el promedio se calcula solo para n = 1000, 10000 y 100000, ya que a partir de n = 1000000 los
+tiempos superan el umbral.
+
+    - Cota subestimada: n^0.8 | tiende a infinito
+    - Cota ajustada: n | se mantiene
+    - Cota sobreestimada: n*log(n) | tiende a 0
 ------------------------------------------------------------------------------
 Tablas de resultados Fibonacci V2
                                                          --Fibonacci V2-- 
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
-           Size |   Cota:       n*log(n)  |  Cota:               n  |   Cota:  (pow(n, 0.8))  |                 Tiempo  |
+          Size  |   Cota:  (pow(n, 0.8))  |  Cota:               n  |   Cota:       n*log(n)  |                 Tiempo  |
                 |                         |                         |                         |                         |
  *         1000 |                0.014571 |                0.003660 |                0.000530 |                3.660000 |
  *        10000 |                0.022421 |                0.003553 |                0.000386 |               35.535000 |
@@ -54,15 +68,16 @@ Tablas de resultados Fibonacci V2
        10000000 |                0.101360 |                0.004035 |                0.000250 |            40352.000000 |
       100000000 |                0.150495 |                0.003780 |                0.000205 |           378027.000000 |
 ------------------------------------------------------------------------------
-Información (Fibonacci V2)
-    - Cota subestimada: n^0.8 | tiende a infinito
-    - Cota ajustada: n | se mantiene
-    - Cota sobreestimada: n*log(n) | tiende a 0
+Información Fibonacci V3 (algoritmo basado en fast doubling)
 
-Este algoritmo tiene una complejidad de 0(n).Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica 
+Este algoritmo tiene una complejidad de 0(log n). Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica 
 que el resultado es inferior al umbral (500 µs), y por ello se calcula un promedio.
-En este caso, el promedio se calcula solo en los vectores con n = 1000, 10000 y 100000, ya que a partir de n = 1000000 los
-tiempos superan el umbral.
+En este caso, el promedio (*) se calcula para todos los valores de n, ya que incluso para n = 1000000000 el tiempo de ejecución
+queda muy por debajo del umbral.
+
+    - Cota subestimada: √(log n) | tiende a infinito
+    - Cota ajustada: log n | se mantiene en torno a 0.008903-0.010520
+    - Cota sobreestimada: n^0.5 | tiende a 0 √(log n) | tiende a infinito
 ------------------------------------------------------------------------------
 Tablas de resultados Fibonacci V3
                                                          --Fibonacci V3-- 
@@ -70,32 +85,22 @@ Tablas de resultados Fibonacci V3
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
            Size |   Cota:     pow(n,0.5)  |  Cota:           log n  |   Cota: sqrt((log(n)))  |                 Tiempo  |
                 |                         |                         |                         |                         |
- *         1000 |                0.030438 |                0.011581 |                0.002530 |                0.080000 |
- *        10000 |                0.033280 |                0.010966 |                0.001010 |                0.101000 |
- *       100000 |                0.035661 |                0.010510 |                0.000383 |                0.121000 |
- *      1000000 |                0.042239 |                0.011364 |                0.000157 |                0.157000 |
- *     10000000 |                0.044586 |                0.011106 |                0.000057 |                0.179000 |
- *    100000000 |                0.052890 |                0.012323 |                0.000023 |                0.227000 |
- *   1000000000 |                0.054039 |                0.011871 |                0.000008 |                0.246000 |
+ *         1000 |                0.023970 |                0.009120 |                0.001992 |                0.063000 |
+ *        10000 |                0.027019 |                0.008903 |                0.000820 |                0.082000 |
+ *       100000 |                0.030651 |                0.009033 |                0.000329 |                0.104000 |
+ *      1000000 |                0.036320 |                0.009772 |                0.000135 |                0.135000 |
+ *     10000000 |                0.039106 |                0.009741 |                0.000050 |                0.157000 |
+ *    100000000 |                0.044269 |                0.010314 |                0.000019 |                0.190000 |
+ *   1000000000 |                0.047888 |                0.010520 |                0.000007 |                0.218000 |
 ------------------------------------------------------------------------------
-Información (Fibonacci V3)
-    - Cota subestimada:
-    - Cota ajustada:
-    - Cota sobreestimada:
+Conclusiones:
+Las mediciones confirman en los tres casos la complejidad teórica esperada, ya que el cociente con la cota ajustada se 
+mantiene aproximadamente constante.
+El algoritmo recursivo (v1) es el peor: su tiempo crece de forma exponencial y alcanza unos 34027.0 µs ya para n = 32, lo 
+que lo hace inviable para valores de n grandes.
+El iterativo (V2) supone una gran mejora, con un crecimiento lineal que llega a unos 378027.0 µs para n = 100000000.
+El basado en fast doubling (V3) es claramente el mejor: aunque n aumenta un millón de veces, su tiempo solo se triplica, 
+sin superar los 0.21 µs.
 
-Este algoritmo tiene una complejidad de 0(log n). Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica 
-que el resultado es inferior al umbral (500 µs), y por ello se calcula un promedio.
-En este caso en especifico, el promedio se calcula en todos los vectores, debido a la enorme eficiencia del algoritmo incluso
-para n = 1000000000. 
-------------------------------------------------------------------------------
-Conclusiones: *mejorar conclusiones con los datos actualizados*
-    - Debido a que el algoritmo empleado en Fibonacci V1 tiene una complejidad de O(φ^n), sus tiempos de ejecución crecen de forma
-    explosiva incluso para valores de n muy pequeños (ya en n = 32 se alcanzan 32378 µs, frente a los 0.018000 µs de n = 2), lo que
-    hace inviable emplearlo con valores de n grandes.
-    - El algoritmo de Fibonacci V2, de complejidad 0(n), presenta un crecimiento mucho más contenido: incluso para n = 100000000, 
-    el tiempo de ejecución es de aproximadamente 378027 µs, un valor manejable en comparación con el crecimiento exponencial de V1.
-    - Por último, el algoritmo de Fibonacci V3, basado en la técnica de 'fast doubling' y con complejidad 0(log n), es notablemente
-    el más eficiente de los tres: para n = 1000000000 aprenas requiere 0.246000 µs, un tiempo practicamente constante en comparación
-    con el crecimiento de los otros dos algoritmos.
-Se confirma empíricamente que reducir la complejidad supone una mejora de eficiencia radical, especialmente relevante cuando se 
-trabaja con valores de n muy grandes.
+En definitiva, reducir la complejidad de un algoritmo se traduce en mejroas enormes de rendimiento, cada vez más importantes
+a medida que crece n.
