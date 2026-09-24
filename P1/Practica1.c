@@ -154,9 +154,9 @@ int main() {
     FIB_1.size = 5;
     FIB_1.fib = fib_1;
     strcpy(FIB_1.nombre, "--Fibonacci V1--");
-    strcpy(FIB_1.sobreestimada, "(1.1)^n");
+    strcpy(FIB_1.sobreestimada, "2^n");
     strcpy(FIB_1.ajustada, "(phi)^n");
-    strcpy(FIB_1.subestimada, "2^n");
+    strcpy(FIB_1.subestimada, "(1.1)^n");
 
     // Definimos el Fibonnacci 2.
     algoritmoFib FIB_2 = {
@@ -164,10 +164,9 @@ int main() {
     FIB_2.size = 6;
     FIB_2.fib = fib_2;
     strcpy(FIB_2.nombre, "--Fibonacci V2--");
-    strcpy(FIB_2.sobreestimada, "(pow(n, 0.8))");
+    strcpy(FIB_2.sobreestimada, "n*log(n)");
     strcpy(FIB_2.ajustada, "n");
-    strcpy(FIB_2.subestimada, "n*log(n)");
-
+    strcpy(FIB_2.subestimada, "(pow(n, 0.8))");
     // Definimos el Fibonnacci 3.
     algoritmoFib FIB_3 = {
         .n = {1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000}};
