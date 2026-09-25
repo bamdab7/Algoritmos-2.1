@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-#include "Auxiliar.h"
+
 #include "Practica1.h"
 
 // -- Codigo Practica -- //
@@ -60,6 +60,43 @@ void cotasFib3(double t, double n, double* sub, double* sob, double* aj) {
     *sub = t / (sqrt((log(n))));
     *aj = t / log(n);
     *sob = t / (pow(n, 0.5));
+}
+
+/* obtiene la hora actual en microsegundos */
+double microsegundos() {
+    struct timeval t;
+    if (gettimeofday(&t, NULL) < 0)
+        return 0.0;
+    return (t.tv_usec + t.tv_sec * 1000000.0);
+}
+
+void printArray(int* a, int n) {
+    // 'a' Array a printear.
+    // 'n' tamaño array.
+    printf("[");
+    for (int i = 0; i < n - 1; i++) {
+        printf("%d, ", a[i]);
+    }
+    printf("%d]\n\n", a[n - 1]);
+}
+
+void arraysIguales(int n, int size, int** a) {
+    // 'a' array de arrays a comparar.
+    // 'n' numero de arrays a comparar.
+    // "size" tamaño de los arrays  (se asume que son del mismo tamaño)
+    int i = 0, j = 0;
+    bool x = true;
+    for (i = 0; i < size; i++) {
+        for (j = 1; j < n; j++) {
+            if (!(a[j][i] == a[j - 1][i]))
+                x = false;
+        }
+    }
+    if (x)
+        printf("Los arrays son iguales\n\n");
+    else {
+        printf("Los arrays no son iguales\n\n");
+    }
 }
 
 void setFibonacci(int* a) {
@@ -168,19 +205,16 @@ int main() {
     strcpy(FIB_2.nombre, "--Fibonacci V2--");
     strcpy(FIB_2.sobreestimada, "n*log(n)");
     strcpy(FIB_2.ajustada, "n");
-    strcpy(FIB_2.subestimada, "(pow(n, 0.8))");
+    strcpy(FIB_2.subestimada, "n^0.8");
     // Definimos el Fibonnacci 3.
     algoritmoFib FIB_3 = {
         .n = {1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000}};
     FIB_3.size = 7;
     FIB_3.fib = fib_3;
     strcpy(FIB_3.nombre, "--Fibonacci V3--");
-    strcpy(FIB_3.sobreestimada, "sqrt((log(n)))");
+    strcpy(FIB_3.subestimada, "sqrt((log(n)))");
     strcpy(FIB_3.ajustada, "log n");
-    strcpy(FIB_3.subestimada, "pow(n,0.5)");
-    for (int i = 0; i < 1000; i++) {
-        fib_2(i);
-    }
+    strcpy(FIB_3.sobreestimada, "n^0.5");
     printearCotas(FIB_1, cotasFib1);
     printearCotas(FIB_2, cotasFib2);
     printearCotas(FIB_3, cotasFib3);
