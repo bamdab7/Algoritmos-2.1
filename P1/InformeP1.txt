@@ -75,9 +75,9 @@ que el resultado es inferior al umbral (500 µs), y por ello se calcula un prome
 En este caso, el promedio (*) se calcula para todos los valores de n, ya que incluso para n = 1000000000 el tiempo de ejecución
 queda muy por debajo del umbral.
 
-    - Cota subestimada: √(log n) | tiende a infinito
+    - Cota subestimada: n^0.5 | tiende a infinito 
     - Cota ajustada: log n | se mantiene en torno a 0.008903-0.010520
-    - Cota sobreestimada: n^0.5 | tiende a 0 √(log n) | tiende a infinito
+    - Cota sobreestimada: √(log n) | tiende a 0
 ------------------------------------------------------------------------------
 Tablas de resultados Fibonacci V3
                                                          --Fibonacci V3-- 
