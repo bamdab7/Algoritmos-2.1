@@ -17,6 +17,8 @@ Aclaraciones:
     minimizando así los posibles errores.
     - En la tabla, los tiempos a los que se les realizó este proceso aparecen junto a un (*). Esa marca se determina 
     de forma automática durante la ejecución, comparando cada medición individual con el umbral.
+    - A mayores, los valores considerados atipicos o anómalos serán marcados con un (+) y serán omitidos del estudio del 
+    algoritmo.
 ------------------------------------------------------------------------------
 Características del ordenador:
     - Memoria: 16,0 GiB
@@ -38,11 +40,11 @@ Tablas de resultados Fibonacci V1
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
            Size |   Cota:        (1.1)^n  |  Cota:         (phi)^n  |   Cota:            2^n  |                 Tiempo  |
                 |                         |                         |                         |                         |
- *            2 |                0.011570 |                0.005348 |                0.003500 |                0.014000 |
- *            4 |                0.026638 |                0.005690 |                0.002437 |                0.039000 |
- *            8 |                0.132022 |                0.006024 |                0.001105 |                0.283000 |
- *           16 |                3.325156 |                0.006923 |                0.000233 |               15.279000 |
-             32 |             1611.601771 |                0.006986 |                0.000008 |            34027.000000 |
+ *            2 |            0.0123966942 |            0.0057294902 |            0.0037500000 |                 0.01500 |
+ *            4 |            0.0314186189 |            0.0067113096 |            0.0028750000 |                 0.04600 |
+ *            8 |            0.1581460019 |            0.0072160341 |            0.0013242188 |                 0.33900 |
+ *           16 |            4.2829413924 |            0.0089170838 |            0.0003002930 |                19.68000 |
+             32 |         1739.4329987923 |            0.0075399617 |            0.0000085509 |             36726.00000 |
 ------------------------------------------------------------------------------
     Como era de esperar, aunque no se observe de manera tan clara para valores de 'n' pequeños, en el salto de
  "n = 16" a "n = 32" los tiempos se diparan completamente provocando que la subestimada  y la sobreestimada varien demasiado.
@@ -91,12 +93,12 @@ Tablas de resultados Fibonacci V3
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
            Size |   Cota:     pow(n,0.5)  |  Cota:           log n  |   Cota: sqrt((log(n)))  |                 Tiempo  |
                 |                         |                         |                         |                         |
- *         1000 |            0.0243507029 |            0.0092649489 |            0.0020238577 |                 0.06400 |
- *        10000 |            0.0286669450 |            0.0094459050 |            0.0008700000 |                 0.08700 |
- *       100000 |            0.0288823967 |            0.0085121718 |            0.0003099032 |                 0.09800 |
- *      1000000 |            0.0363203729 |            0.0097716258 |            0.0001350000 |                 0.13500 |
- *     10000000 |            0.0386077804 |            0.0096165207 |            0.0000490153 |                 0.15500 |
- *    100000000 |            0.0547538957 |            0.0127574004 |            0.0000235000 |                 0.23500 |
+ *         1000 |            0.0239702232 |            0.0091201841 |            0.0019922349 |                 0.06300 |
+ *        10000 |            0.0266899143 |            0.0087944633 |            0.0008100000 |                 0.08100 |
+ *       100000 |            0.0291771151 |            0.0085990307 |            0.0003130655 |                 0.09900 |
+ *      1000000 |            0.0365894127 |            0.0098440083 |            0.0001360000 |                 0.13600 |
+ *     10000000 |            0.0381096154 |            0.0094924365 |            0.0000483828 |                 0.15300 |
+ *    100000000 |            0.0454340837 |            0.0105859280 |            0.0000195000 |                 0.19500 |
  *   1000000000 |            0.0463503861 |            0.0101817929 |            0.0000066724 |                 0.21100 |
 ------------------------------------------------------------------------------
 Conclusiones:
