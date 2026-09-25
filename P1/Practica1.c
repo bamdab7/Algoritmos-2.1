@@ -6,8 +6,8 @@
 #include <sys/time.h>
 #include <time.h>
 
-
 #include "Practica1.h"
+
 
 // -- Codigo Practica -- //
 
@@ -71,10 +71,9 @@ double microsegundos() {
 }
 
 void printArray(int* a, int n) {
-    // 'a' Array a printear.
-    // 'n' tamaño array.
+    int i;
     printf("[");
-    for (int i = 0; i < n - 1; i++) {
+    for (i = 0; i < n - 1; i++) {
         printf("%d, ", a[i]);
     }
     printf("%d]\n\n", a[n - 1]);
@@ -117,7 +116,7 @@ void generarSecuenciaFib(int* a, int n, int (*algoritmo)(int)) {
 
 void printTest(int** a) {
     int i = 0;
-    printf("|     n     |  fib1(n)  |  fib2(n)  |  fib2(n)  |\n");
+    printf("|     n     |  fib1(n)  |  fib2(n)  |  fib3(n)  |\n");
     for (i = 0; i < 20; i++) {
         printf("| %9d | %9d | %9d | %9d |\n", i + 1, a[0][i], a[1][i],
                a[2][i]);
@@ -128,15 +127,15 @@ void testFibs() {
     int* f1 = malloc(sizeof(int) * 100);
     int* f2 = malloc(sizeof(int) * 100);
     int* f3 = malloc(sizeof(int) * 100);
-    int** a = malloc(sizeof(int*) * 4);
+    int** a = malloc(sizeof(int* ) * 4);
     a[3] = f20, a[0] = f1, a[1] = f2, a[2] = f3;
 
     setFibonacci(f20);
     generarSecuenciaFib(f1, 20, fib_1);
     generarSecuenciaFib(f2, 20, fib_2);
     generarSecuenciaFib(f3, 20, fib_3);
-    arraysIguales(4, 20, a);
     printTest(a);
+    arraysIguales(4, 20, a);
     free(f20), free(f1), free(f2), free(f3), free(a);
     printf("\n\n\n\n\n");
 }
@@ -187,7 +186,10 @@ void printearCotas(algoritmoFib args,
 }
 
 int main() {
-    testFibs();
+    //Sabemos que todas las variables deben declararse al principo de cada funcion,
+    //strcpy solo se usa con el objetivo de setear los valores de cada struct declarado.
+
+
     // Definimos el Fibonacci numero 1.
     algoritmoFib FIB_1 = {.n = {2, 4, 8, 16, 32}};
     FIB_1.size = 5;
@@ -215,6 +217,8 @@ int main() {
     strcpy(FIB_3.subestimada, "sqrt((log(n)))");
     strcpy(FIB_3.ajustada, "log n");
     strcpy(FIB_3.sobreestimada, "n^0.5");
+
+    testFibs();
     printearCotas(FIB_1, cotasFib1);
     printearCotas(FIB_2, cotasFib2);
     printearCotas(FIB_3, cotasFib3);
