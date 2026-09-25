@@ -50,7 +50,8 @@ Tablas de resultados Fibonacci V1
  "n = 16" a "n = 32" los tiempos se diparan completamente provocando que la subestimada  y la sobreestimada varien demasiado.
  sabiendo que 'φ' vale aproximadamente 1.61, creemos que una cota ligeramente subestimada de 1.5^n y una cota ligeramente sobreestimada de 1.8^n
  son alternativas mucho mas razonables que las estudiadas.
-    La ajustada se mantiene relativamente estable y parece tender aproximadamente a la constante: 0.007
+
+    La ajustada se mantiene relativamente estable y tiende aproximadamente a: 0.007
 ------------------------------------------------------------------------------
 Información Fibonacci V2 (algoritmo iterativo)
 
@@ -58,7 +59,7 @@ Información Fibonacci V2 (algoritmo iterativo)
  con dos operaciones de tiempo constante, por tanto una cota ajustada lineal es lo mas logico y razonable para este caso.
     Las cotas selecioandas para este algoritmo fueron:
     - Cota subestimada: n^0.8 | tiende a infinito
-    - Cota ajustada: n | se mantiene
+    - Cota ajustada: n | tiende a una cosntante.
     - Cota sobreestimada: n*log(n) | tiende a 0
 ------------------------------------------------------------------------------
 Tablas de resultados Fibonacci V2
@@ -70,21 +71,23 @@ Tablas de resultados Fibonacci V2
  *        10000 |            0.0230873602 |            0.0036591000 |            0.0003972817 |                36.59100 |
  *       100000 |            0.0334503000 |            0.0033450300 |            0.0002905456 |               334.50300 |
         1000000 |            0.0591957607 |            0.0037350000 |            0.0002703483 |              3735.00000 |
-       10000000 |            0.1106737162 |            0.0044060000 |            0.0002733574 |             44060.00000 |
+(+)    10000000 |            0.1106737162 |            0.0044060000 |            0.0002733574 |             44060.00000 |
       100000000 |            0.1483797179 |            0.0037271300 |            0.0002023340 |            372713.00000 |
 ------------------------------------------------------------------------------
+    Los resultados de la medicion fueros en su mayoria satisfactorios, aunque a psear de repetir reiteradas veces la medicion, para n = 10000000
+ ocurre un aumento del tiempo mayor de lo esperado y no lo tendremos en cuenta, seguramente provocado por el ruido del sistema operatico auqnue no podemos confirmar nada.
 
+    La ajustada se mantiene relativamente constante y tiende aproximadamente a 0.0037.
 
 ------------------------------------------------------------------------------
 Información Fibonacci V3 (algoritmo basado en fast doubling)
 
-Este algoritmo tiene una complejidad de 0(log n). Como ya se ha indicado en el apartado 'Aclaraciones', el simbolo (*), indica 
-que el resultado es inferior al umbral (500 µs), y por ello se calcula un promedio.
-En este caso, el promedio (*) se calcula para todos los valores de n, ya que incluso para n = 1000000000 el tiempo de ejecución
-queda muy por debajo del umbral.
-
+    Este algoritmo calcula el termino n-esimo de la secuencia mediante la aplicacion iterativa de un metodo matematico complejo denominado "fast doubling",
+ debido a la complejidad del codigo nos resulta dificil comprender cuantas iteraciones realizara el bucle en funcion de n, por tanto nos es imposible estimar previamente la complejidad del algoritmo.
+ 
+    Las cotas seleciandas fueron:
     - Cota subestimada: n^0.5 | tiende a infinito 
-    - Cota ajustada: log n | se mantiene en torno a 0.008903-0.010520
+    - Cota ajustada: log n | tiende a una cosntante
     - Cota sobreestimada: √(log n) | tiende a 0
 ------------------------------------------------------------------------------
 Tablas de resultados Fibonacci V3
@@ -101,14 +104,19 @@ Tablas de resultados Fibonacci V3
  *    100000000 |            0.0454340837 |            0.0105859280 |            0.0000195000 |                 0.19500 |
  *   1000000000 |            0.0463503861 |            0.0101817929 |            0.0000066724 |                 0.21100 |
 ------------------------------------------------------------------------------
-Conclusiones:
-Las mediciones confirman en los tres casos la complejidad teórica esperada, ya que el cociente con la cota ajustada se 
-mantiene aproximadamente constante.
-El algoritmo recursivo (v1) es el peor: su tiempo crece de forma exponencial y alcanza unos 34027.0 µs ya para n = 32, lo 
-que lo hace inviable para valores de n grandes.
-El iterativo (V2) supone una gran mejora, con un crecimiento lineal que llega a unos 378027.0 µs para n = 100000000.
-El basado en fast doubling (V3) es claramente el mejor: aunque n aumenta un millón de veces, su tiempo solo se triplica, 
-sin superar los 0.21 µs.
+    Los resultados para las cotas propuestas han sido compeltamente satisfactorios, sobreestimando y subestimando la cota solo ligeramente
+y obtieniendo una ajustada razonablemente estable.
+    
+    La ajustada se mantiene relativamente constante y tiende aproximadamente a 0.010
+------------------------------------------------------------------------------
+ Conclusion:
+    
+    Los resultados obtenidos en el estudio demuestran una clara superioridad del tercer algoritmo en cuanto a complejidad temporal,
+siendo este notablemente mas eficiente que los otros dos. En cambio, el primer algoritmo resulto ser una terrible alternativa, siendo incapaz de
+tan siquiera calcular en un tiempo razonable fib1(64), por ultimo el segundo algoritmo a psear de ser peor que el tercero, propone una solucion 
+mucho mas sencilla que el tercer algoritmo aunque sea menos eficiente.
+    
 
-En definitiva, reducir la complejidad de un algoritmo se traduce en mejroas enormes de rendimiento, cada vez más importantes
-a medida que crece n.
+    
+
+
