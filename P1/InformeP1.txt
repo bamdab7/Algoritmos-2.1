@@ -1,4 +1,6 @@
-Autores: Lucía Boullosa Álvarez, Nerea Pena Carbajales, Javier Fernández Otero
+ALGORITMOS - PRÁCTICA 1 SUCESION DE FIBONACCI   CURSO 2026/2027
+
+Autores: Lucía Boullosa Álvarez (lucia.boullosa@udc.es), Nerea Pena Carbajales (n.pena@udc.es), Javier Fernández Otero (javier.fernandez8@udc.es)
 ------------------------------------------------------------------------------
 Introduccion:
 En esta práctica se nos pidió implementar y estudiar tres algoritmos distintos para el cálculo del término n-ésimo de 
