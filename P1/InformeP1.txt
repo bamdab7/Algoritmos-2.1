@@ -1,34 +1,69 @@
-ALGORITMOS - PRÁCTICA 1: SUCESIÓN DE FIBONACCI   CURSO 2026/2027
+ALGORITMOS - PRÁCTICA 1: SUCESIÓN DE FIBONACCI
+CURSO 2026/2027
 
-Autores: Lucía Boullosa Álvarez (lucia.boullosa@udc.es), Nerea Pena Carbajales (n.pena@udc.es), Javier Fernández Otero (javier.fernandez8@udc.es)
+Autores:
+    Lucía Boullosa Álvarez (lucia.boullosa@udc.es)
+    Nerea Pena Carbajales (n.pena@udc.es)
+    Javier Fernández Otero (javier.fernandez8@udc.es)
+
 ------------------------------------------------------------------------------
 Introducción:
-    En esta práctica realizaremos el estudio de tres algoritmos distintos para el cálculo del término n-ésimo de la secuencia de Fibonacci, cada uno basado en una técnica diferente: recursión directa, iteración y «fast doubling».
 
-    El objetivo del estudio es analizar de forma empírica el comportamiento de cada algoritmo a medida que crece el tamaño de la entrada, contrastando los tiempos de ejecución medidos frente a distintas cotas teóricas (subestimada, ajustada y sobreestimada), para comprobar si el comportamiento real se corresponde con la complejidad asintótica asignada a cada uno.
+        En esta práctica realizaremos el estudio de tres algoritmos distintos
+    para el cálculo del término n-ésimo de la secuencia de Fibonacci, cada
+    uno basado en una técnica diferente: recursión directa, iteración y
+    «fast doubling».
+
+        El objetivo del estudio es analizar de forma empírica el comportamiento
+    de cada algoritmo a medida que crece el tamaño de la entrada,
+    contrastando los tiempos de ejecución medidos frente a distintas cotas
+    teóricas (subestimada, ajustada y sobreestimada), para comprobar si el
+    comportamiento real se corresponde con la complejidad asintótica
+    asignada a cada uno.
+
 ------------------------------------------------------------------------------
 Aclaraciones:
-    - Todos los resultados de tiempos mostrados en las tablas aparecen representados en microsegundos (µs).
-    - Para medir tiempos pequeños de forma precisa, se utiliza un umbral de confianza de 500 µs. Si la medición para un valor de n es inferior a dicho umbral, la ejecución se repite 1000 veces y se calcula el tiempo promedio de una ejecución, minimizando así los posibles errores.
-    - En las tablas, los tiempos a los que se les realizó este proceso aparecen junto a un (*). Esa marca se determina de forma automática durante la ejecución, comparando cada medición individual con el umbral.
-    - A mayores, los valores considerados atípicos o anómalos serán marcados con un (+) y serán omitidos del estudio del algoritmo.
+
+    - Todos los resultados de tiempos mostrados en las tablas aparecen
+      representados en microsegundos (µs).
+
+    - Para medir tiempos pequeños de forma precisa, se utiliza un umbral de
+      confianza de 500 µs. Si la medición para un valor de n es inferior a
+      dicho umbral, la ejecución se repite 1000 veces y se calcula el tiempo
+      promedio de una ejecución, minimizando así los posibles errores.
+
+    - En la tabla, los tiempos a los que se les realizó este proceso aparecen
+      junto a un (*). Esa marca se determina de forma automática durante la
+      ejecución, comparando cada medición individual con el umbral.
+
+    - A mayores, los valores considerados atípicos o anómalos serán marcados
+      con un (+) y serán omitidos del estudio del algoritmo.
+
 ------------------------------------------------------------------------------
 Características del ordenador:
+
     - Memoria: 16,0 GiB.
     - Procesador: 13th Gen Intel® Core™ i5-13420H × 12.
     - Sistema operativo: Ubuntu 24.04.3 LTS.
+
 ------------------------------------------------------------------------------
 Información Fibonacci V1 (algoritmo recursivo)
 
-    Este algoritmo utiliza recursión para el cálculo del término n-ésimo que se le indique. Tras observar el código, podemos esperar un crecimiento de los tiempos de un orden muy alto debido al acelerado crecimiento del número de llamadas recursivas.
+        Este algoritmo utiliza recursión para el cálculo del término n-ésimo
+    que se le indique. Tras observar el código, podemos esperar un
+    crecimiento de los tiempos de un orden muy alto debido al acelerado
+    crecimiento del número de llamadas recursivas.
 
     Las cotas seleccionadas para este algoritmo fueron:
+
     - Cota subestimada: (1.1)^n | tiende a infinito.
     - Cota ajustada: φ^n | tiende a una constante.
     - Cota sobreestimada: 2^n | tiende a 0.
+
 ------------------------------------------------------------------------------
-Tablas de resultados Fibonacci V1
-                                                      --Fibonacci V1-- 
+Tabla de resultados Fibonacci V1
+
+                                                      --Fibonacci V1--
 
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
            Size |   Cota:        (1.1)^n  |  Cota:         (phi)^n  |   Cota:            2^n  |                 Tiempo  |
@@ -38,22 +73,37 @@ Tablas de resultados Fibonacci V1
  *            8 |            0.1581460019 |            0.0072160341 |            0.0013242188 |                 0.33900 |
  *           16 |            4.2829413924 |            0.0089170838 |            0.0003002930 |                19.68000 |
              32 |         1739.4329987923 |            0.0075399617 |            0.0000085509 |             36726.00000 |
-------------------------------------------------------------------------------
-    Como era de esperar, aunque no se observe de manera tan clara para valores de «n» pequeños, en el salto de «n = 16» a «n = 32» los tiempos se disparan completamente, provocando que la subestimada y la sobreestimada varíen demasiado. Sabiendo que «φ» vale aproximadamente 1.61, creemos que una cota ligeramente subestimada de 1.5^n y una cota ligeramente sobreestimada de 1.8^n son alternativas mucho más razonables que las estudiadas.
 
-    La ajustada se mantiene relativamente estable y tiende aproximadamente a: 0.007.
+------------------------------------------------------------------------------
+        Como era de esperar, aunque no se observe de manera tan clara para
+    valores de «n» pequeños, en el salto de «n = 16» a «n = 32» los tiempos
+    se disparan completamente, provocando que la subestimada y la
+    sobreestimada varíen demasiado. Sabiendo que «φ» vale aproximadamente
+    1.61, creemos que una cota ligeramente subestimada de 1.5^n y una cota
+    ligeramente sobreestimada de 1.8^n son alternativas mucho más razonables
+    que las estudiadas.
+
+    El cociente de la cota ajustada se mantiene relativamente estable,
+    alrededor de 0.007.
+
 ------------------------------------------------------------------------------
 Información Fibonacci V2 (algoritmo iterativo)
 
-    Este algoritmo calcula el término n-ésimo de la secuencia de manera iterativa a través de un bucle de orden n con dos operaciones de tiempo constante; por tanto, una cota ajustada lineal es lo más lógico y razonable para este caso.
+        Este algoritmo calcula el término n-ésimo de la secuencia de manera
+    iterativa a través de un bucle de orden n con dos operaciones de tiempo
+    constante; por tanto, una cota ajustada lineal es lo más lógico y
+    razonable para este caso.
 
     Las cotas seleccionadas para este algoritmo fueron:
+
     - Cota subestimada: n^0.8 | tiende a infinito.
     - Cota ajustada: n | tiende a una constante.
     - Cota sobreestimada: n*log(n) | tiende a 0.
+
 ------------------------------------------------------------------------------
-Tablas de resultados Fibonacci V2
-                                                         --Fibonacci V2-- 
+Tabla de resultados Fibonacci V2
+
+                                                         --Fibonacci V2--
 
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
            Size |   Cota:          n^0.8  |  Cota:               n  |   Cota:       n*log(n)  |                 Tiempo  |
@@ -64,22 +114,37 @@ Tablas de resultados Fibonacci V2
         1000000 |            0.0591957607 |            0.0037350000 |            0.0002703483 |              3735.00000 |
 (+)    10000000 |            0.1106737162 |            0.0044060000 |            0.0002733574 |             44060.00000 |
       100000000 |            0.1483797179 |            0.0037271300 |            0.0002023340 |            372713.00000 |
-------------------------------------------------------------------------------
-    Los resultados de la medición fueron en su mayoría satisfactorios, aunque, a pesar de repetir reiteradas veces la medición, para n = 10000000 ocurre un aumento del tiempo mayor de lo esperado y no lo tendremos en cuenta, seguramente provocado por el ruido del sistema operativo, aunque no podemos confirmar nada.
 
-    La ajustada se mantiene relativamente constante y tiende aproximadamente a 0.0037.
+------------------------------------------------------------------------------
+        Los resultados de la medición fueron en su mayoría satisfactorios,
+    aunque, a pesar de repetir reiteradas veces la medición, para
+    n = 10000000 ocurre un aumento del tiempo mayor de lo esperado y no lo
+    tendremos en cuenta. Podría deberse al ruido del sistema operativo,
+    aunque no podemos confirmarlo.
+
+        El cociente de la cota ajustada se mantiene relativamente estable,
+    alrededor de 0.0037.
+
 ------------------------------------------------------------------------------
 Información Fibonacci V3 (algoritmo basado en fast doubling)
 
-    Este algoritmo calcula el término n-ésimo de la secuencia mediante la aplicación iterativa de un método matemático complejo denominado «fast doubling». Debido a la complejidad del código nos resulta difícil comprender cuántas iteraciones realizará el bucle en función de n; por tanto, nos es imposible estimar previamente la complejidad del algoritmo.
+        Este algoritmo calcula el término n-ésimo de la secuencia mediante la
+    aplicación iterativa de un método matemático complejo denominado
+    «fast doubling». Debido a la complejidad del código nos resulta difícil
+    comprender cuántas iteraciones realizará el bucle en función de n;
+    por tanto, nos es imposible estimar previamente la complejidad del
+    algoritmo.
 
     Las cotas seleccionadas fueron:
+
     - Cota subestimada: n^0.5 | tiende a infinito.
     - Cota ajustada: log n | tiende a una constante.
     - Cota sobreestimada: √(log n) | tiende a 0.
+
 ------------------------------------------------------------------------------
-Tablas de resultados Fibonacci V3
-                                                         --Fibonacci V3-- 
+Tabla de resultados Fibonacci V3
+
+                                                         --Fibonacci V3--
 
                 |            Subestimada  |               Ajustada  |          Sobreestimada  |                         |
            Size |   Cota: sqrt((log(n)))  |  Cota:           log n  |   Cota:          n^0.5  |                 Tiempo  |
@@ -91,12 +156,23 @@ Tablas de resultados Fibonacci V3
  *     10000000 |            0.0381096154 |            0.0094924365 |            0.0000483828 |                 0.15300 |
  *    100000000 |            0.0454340837 |            0.0105859280 |            0.0000195000 |                 0.19500 |
  *   1000000000 |            0.0463503861 |            0.0101817929 |            0.0000066724 |                 0.21100 |
-------------------------------------------------------------------------------
-    Los resultados para las cotas propuestas han sido completamente satisfactorios, sobreestimando y subestimando la cota solo ligeramente y obteniendo una ajustada razonablemente estable.
 
-    La ajustada se mantiene relativamente constante y tiende aproximadamente a 0.010.
+------------------------------------------------------------------------------
+        Los resultados para las cotas propuestas han sido completamente
+    satisfactorios, sobreestimando y subestimando la cota solo ligeramente
+    y obteniendo una ajustada razonablemente estable.
+
+        El cociente de la cota ajustada se mantiene relativamente estable,
+    alrededor de 0.010.
+
 ------------------------------------------------------------------------------
 Conclusión:
 
-    Los resultados obtenidos en el estudio demuestran una clara superioridad del tercer algoritmo en cuanto a complejidad temporal, siendo este notablemente más eficiente que los otros dos. En cambio, el primer algoritmo resultó ser una terrible alternativa, siendo incapaz de tan siquiera calcular en un tiempo razonable fib1(64). Por último, el segundo algoritmo, a pesar de ser peor que el tercero, propone una solución mucho más sencilla que el tercer algoritmo aunque sea menos eficiente.
-
+        Los resultados obtenidos en el estudio demuestran una clara 
+    superioridad del tercer algoritmo en cuanto a complejidad temporal, siendo este
+    notablemente más eficiente que los otros dos. En cambio, el primer
+    algoritmo resultó ser una terrible alternativa, siendo incapaz de tan
+    siquiera calcular en un tiempo razonable fib1(64). Por último, el
+    segundo algoritmo, a pesar de ser peor que el tercero, propone una
+    solución mucho más sencilla que el tercer algoritmo aunque sea menos
+    eficiente.
