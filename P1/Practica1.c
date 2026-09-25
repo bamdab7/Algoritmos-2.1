@@ -63,9 +63,10 @@ void cotasFib3(double t, double n, double* sub, double* sob, double* aj) {
 }
 
 void setFibonacci(int* a) {
+    int i = 0;
     int m[20] = {1,  1,   2,   3,   5,   8,   13,   21,   34,   55,
                  89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765};
-    for (int i = 0; i < 20; i++) {
+    for (i = 0; i < 20; i++) {
         a[i] = m[i];
     }
 }
@@ -81,7 +82,8 @@ void printTest(int** a) {
     int i = 0;
     printf("|     n     |  fib1(n)  |  fib2(n)  |  fib2(n)  |\n");
     for (i = 0; i < 20; i++) {
-        printf("| %9d | %9d | %9d | %9d |\n", i + 1, a[0][i], a[1][i], a[2][i]);
+        printf("| %9d | %9d | %9d | %9d |\n", i + 1, a[0][i], a[1][i],
+               a[2][i]);
     }
 }
 void testFibs() {
@@ -140,7 +142,7 @@ void printearCotas(algoritmoFib args,
     for (i = 0; i < args.size; i++) {
         t = medirTiempo(args.fib, args.n[i], micro);
         cotas(t, args.n[i], &sub, &sobre, &aj);
-        printf("%2s %12d |%24lf |%24lf |%24lf |%24lf |\n", micro,
+        printf("%2s %12d |%24.10lf |%24.10lf |%24.10lf |%24.5f |\n", micro,
                (int)args.n[i], sub, aj, sobre, t);
     }
     free(micro);
