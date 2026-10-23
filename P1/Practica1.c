@@ -217,7 +217,8 @@ int main() {
     strcpy(FIB_3.subestimada, "sqrt((log(n)))");
     strcpy(FIB_3.ajustada, "log n");
     strcpy(FIB_3.sobreestimada, "n^0.5");
-
+    for(int i = 0; i<1000; i++)
+        fib_2(i);;
     testFibs();
     printearCotas(FIB_1, cotasFib1);
     printearCotas(FIB_2, cotasFib2);
