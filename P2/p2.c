@@ -81,6 +81,50 @@ void orndenacionPorInserccion(int* v, int n, int umbral) {
     }
 }
 
+void fusionar(int v[], int izq, int medio, int der, int aux[]) {
+    int i = izq, j = medio + 1, k = izq;
+
+    while (i <= medio && j <= der) {
+        if (v[i] <= v[j]) {
+            aux[k++] = v[i++];
+        } else {
+            aux[k++] = v[j++];
+        }
+    }
+    while (i <= medio) {
+        aux[k++] = v[i++];
+    }
+    while (j <= der) {
+        aux[k++] = v[j++];
+    }
+    for (i = izq; i <= der; i++) {
+        v[i] = aux[i];
+    }
+}
+
+void ordenacionFusionHibridaAux(int v[], int izq, int der, int aux[],
+                                int umbral) {
+    int medio;
+
+    if (izq < der) {
+        if (der - izq + 1 <= umbral) {
+            orndenacionPorInserccion(v + izq, der - izq + 1, umbral);
+        } else {
+            medio = izq + (der - izq) / 2;
+            ordenacionFusionHibridaAux(v, izq, medio, aux, umbral);
+            ordenacionFusionHibridaAux(v, medio + 1, der, aux, umbral);
+            fusionar(v, izq, medio, der, aux);
+        }
+    }
+}
+
+void ordenacionFusionHibrida(int v[], int n, int umbral) {
+    int* aux = malloc(sizeof(int) * n);
+
+    ordenacionFusionHibridaAux(v, 0, n - 1, aux, umbral);
+    free(aux);
+}
+
 void testIsSorted(int v[]) {
     ascendente(v, 20);
     printf("Ascendente (n = 20)\n");
@@ -131,8 +175,40 @@ void testInserccion(int v[]) {
     printf("  Ordenado:  %s\n\n", isSorted(v, 20) ? "Si" : "No");
 }
 
+void testFusion(int v[], int umbral) {
+    int i, exitos = 0;
+    for (i = 0; i < 100; i++) {
+        aleatorio(v, 1000);
+        ordenacionFusionHibrida(v, 1000, umbral);
+        if (isSorted(v, 1000))
+            exitos++;
+    }
+    printf("100 vectores aleatorios (n = 1000)\n");
+    printf("  Correctos: %d/100\n", exitos);
+    printf("  Resultado: %s\n\n", exitos == 100 ? "Exito" : "Fallo");
+
+    printf("Aleatorio (n = 10000)\n");
+    aleatorio(v, 10000);
+    printf("  Antes:     ");
+    printearVector(v, 10000);
+    ordenacionFusionHibrida(v, 10000, umbral);
+    printf("  Despues:   ");
+    printearVector(v, 10000);
+    printf("  Ordenado:  %s\n\n", isSorted(v, 10000) ? "Si" : "No");
+    aleatorio(v, 20);
+    printf("Aleatorio (n = 20)\n");
+    printf("  Antes:     ");
+    printearVector(v, 20);
+    ordenacionFusionHibrida(v, 20, umbral);
+    printf("  Despues:   ");
+    printearVector(v, 20);
+    printf("  Ordenado:  %s\n\n", isSorted(v, 20) ? "Si" : "No");
+}
+
 void test() {
     int* v = malloc(sizeof(int) * 10000);
+    int umbrales[] = {1, 20, 200};
+    int i;
     printf("------------------------------------------------------------\n");
     printf(" TEST isSorted\n");
     printf("------------------------------------------------------------\n\n");
@@ -141,14 +217,20 @@ void test() {
     printf(" TEST Insercion\n");
     printf("------------------------------------------------------------\n\n");
     testInserccion(v);
+    for (i = 0; i < 3; i++) {
+        printf("------------------------------------------------------------\n");
+        printf(" TEST Fusion - Umbral: %d\n", umbrales[i]);
+        printf("------------------------------------------------------------\n\n");
+        testFusion(v, umbrales[i]);
+    }
     printf("------------------------------------------------------------"
            "\n\n\n\n\n\n\n");
     free(v);
 }
 
 double medirTiempo(void (*alg)(int[], int, int),
-                   void (*inicializar)(int[], int), int v[], int n,
-                   int umbral, char* micro) {
+                   void (*inicializar)(int[], int), int v[], int n, int umbral,
+                   char* micro) {
     double ta, tb, t, t1, t2;
     int i, K = 1000;
     strcpy(micro, " ");
@@ -191,62 +273,76 @@ void cotasInserccion(double t, double n, double* sub, double* sob,
     *sob = t / pow(n, 2.2);
 }
 
-void printearCotas(sortAlgorithm args,
+void printearCotas(AlgPrintArgs args,
                    void (*cotas)(double t, double n, double* sub, double* sob,
-                                 double* aj),
-                   void (*inicializar)(int[], int)) {
+                                 double* aj)) {
+    void (*inicializar[])(int[], int) = {ascendente, descendente, aleatorio};
     int* v = malloc(sizeof(int) * (int)args.n[args.size - 1]);
     double t, sub = 0, sobre = 0, aj = 0;
-    int i = 0;
+    int i = 0, j = 0;
     char micro[3];
     char titulo[96];
     const char separador[] =
         "---------------------------------------------------------------"
         "---------------------------------------------------------------";
-    if (args.umbral == -1) {
-        snprintf(titulo, sizeof(titulo), "%s - Inicializacion: %s",
-                 args.nombre, args.inicializacion);
-    } else {
-        snprintf(titulo, sizeof(titulo),
-                 "%s - Inicializacion: %s - Umbral: %d", args.nombre,
-                 args.inicializacion, args.umbral);
+    for (j = 0; j < 3; j++) {
+        if (args.umbral == -1) {
+            snprintf(titulo, sizeof(titulo), "%s - Inicializacion: %s",
+                     args.nombre, args.inicializacion[j]);
+        } else {
+            snprintf(titulo, sizeof(titulo),
+                     "%s - Inicializacion: %s - Umbral: %d", args.nombre,
+                     args.inicializacion[j], args.umbral);
+        }
+        printf("\n%35s[%s]\n\n", "", titulo);
+        printf("%s\n", separador);
+        printf("%15s | %24s | %24s | %24s | %24s |\n", "Size", "Tiempo",
+               "Subestimada", "Ajustada", "Sobreestimada");
+        printf("%15s | %24s | %24s | %24s | %24s |\n", "n", "t(n)",
+               args.subestimada, args.ajustada, args.sobreestimada);
+        printf("%s\n", separador);
+        for (i = 0; i < args.size; i++) {
+            t = medirTiempo(args.sort, inicializar[j], v, (int)args.n[i],
+                            args.umbral, micro);
+            cotas(t, args.n[i], &sub, &sobre, &aj);
+            printf("%2s %12d | %24.5f | %24.10lf | %24.10lf | %24.10lf |\n",
+                   micro, (int)args.n[i], t, sub, aj, sobre);
+        }
+    printf("%s\n", separador);
     }
-    printf("\n%35s[%s]\n\n", "", titulo);
-    printf("%s\n", separador);
-    printf("%15s | %24s | %24s | %24s | %24s |\n", "Size", "Tiempo",
-           "Subestimada", "Ajustada", "Sobreestimada");
-    printf("%15s | %24s | %24s | %24s | %24s |\n", "n", "t(n)",
-           args.subestimada, args.ajustada, args.sobreestimada);
-    printf("%s\n", separador);
-    for (i = 0; i < args.size; i++) {
-        t = medirTiempo(args.sort, inicializar, v, (int)args.n[i],
-                        args.umbral, micro);
-        cotas(t, args.n[i], &sub, &sobre, &aj);
-        printf("%2s %12d | %24.5f | %24.10lf | %24.10lf | %24.10lf |\n", micro,
-               (int)args.n[i], t, sub, aj, sobre);
-    }
-    printf("%s\n", separador);
     printf("\n");
     free(v);
 }
 
 int main() {
-    sortAlgorithm insercion = {.nombre = "Insercion",
-                               .umbral = -1,
-                               .subestimada = "t(n)/n^1.8",
-                               .sobreestimada = "t(n)/n^2.2",
-                               .ajustada = "t(n)/n^2",
-                               .sort = orndenacionPorInserccion,
-                               .n = {500, 1000, 2000, 4000, 8000, 16000},
-                               .size = 6};
+    AlgPrintArgs insercion = {
+        .nombre = "Insercion",
+        .umbral = -1,
+        .inicializacion = {"Ascendente", "Descendente", "Aleatorio"},
+        .subestimada = "t(n)/n^1.8",
+        .sobreestimada = "t(n)/n^2.2",
+        .ajustada = "t(n)/n^2",
+        .sort = orndenacionPorInserccion,
+        .n = {500, 1000, 2000, 4000, 8000, 16000},
+        .size = 6};
+    AlgPrintArgs Fusion = {
+        .nombre = "Fusion",
+        .umbral = 1,
+        .inicializacion = {"Ascendente", "Descendente", "Aleatorio"},
+        .subestimada = "t(n)/(n^0.8)*log(n)",
+        .sobreestimada = "t(n)/(n^1.2)*log(n)",
+        .ajustada = "t(n)/n*log(n)",
+        .sort = ordenacionFusionHibrida,
+        .n = {500, 1000, 2000, 4000, 8000, 16000},
+        .size = 6};
 
-    /* Configuracion prep   arada para las tablas de tiempos. */
+    /* Configuracion preparada para las tablas de tiempos. */
     inicializar_semilla();
-    // test();
-    strcpy(insercion.inicializacion, "Aleatorio");
-    printearCotas(insercion, cotasInserccion, aleatorio);
-    strcpy(insercion.inicializacion, "Ascendente");
-    printearCotas(insercion, cotasInserccion, ascendente);
-    strcpy(insercion.inicializacion, "Descendente");
-    printearCotas(insercion, cotasInserccion, descendente);
+     test();
+    printearCotas(insercion, cotasInserccion);
+    printearCotas(Fusion, cotasInserccion);
+    Fusion.umbral = 20;
+    printearCotas(Fusion, cotasInserccion);
+    Fusion.umbral = 200;
+    printearCotas(Fusion, cotasInserccion);
 }
