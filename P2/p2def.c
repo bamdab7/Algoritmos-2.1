@@ -1,4 +1,4 @@
-#include "p2.h"
+#include "p2def.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -67,10 +67,9 @@ bool isSorted(int v[], int n) { // O(n)
 }
 
 void ordenacionInsercion(int v[], int n) {
-    
+
     int i = 1, j = 0, x = 0;
 
-    
     for (i = 1; i < n; i++) {
         x = v[i];
         j = i - 1;
@@ -225,10 +224,10 @@ void test() {
     testInsercion(v);
     for (i = 0; i < 3; i++) {
         printf("--------------------------------"
-       "----------------------------\n");
+               "----------------------------\n");
         printf(" TEST Fusion - Umbral: %d\n", umbrales[i]);
         printf("--------------------------------"
-       "----------------------------\n\n");
+               "----------------------------\n\n");
         testFusion(v, umbrales[i]);
     }
     printf("------------------------------------------------------------"
@@ -275,40 +274,36 @@ double medirTiempo(void (*alg)(int[], int, int),
     return t;
 }
 
-void cotasInsercion(double t, double n, double* sub, double* sob,
-                     double* aj) {
+void cotasInsercion(double t, double n, double* sub, double* sob, double* aj) {
     *sub = t / pow(n, 1.8);
     *aj = t / pow(n, 2.0);
     *sob = t / pow(n, 2.2);
 }
 
 void cotasInsercionAscendente(double t, double n, double* sub, double* sob,
-                     double* aj) {
+                              double* aj) {
     *sub = t / pow(n, 0.8);
     *aj = t / n;
     *sob = t / pow(n, 1.2);
 }
 
-void cotasFusion(double t, double n, double* sub, double* sob,
-                 double* aj) {
+void cotasFusion(double t, double n, double* sub, double* sob, double* aj) {
     *sub = t / (pow(n, 0.8) * log(n));
     *aj = t / (n * log(n));
     *sob = t / (pow(n, 1.2) * log(n));
 }
 
 void imprimirCabeceraCotas(AlgPrintArgs args, int j) {
-    printf("%15s | %12s | %24s | %24s | %24s | %24s |\n",
-           "Size", "Repeticiones", "Tiempo (us)",
-           "Subestimada", "Ajustada", "Sobreestimada");
+    printf("%15s | %12s | %24s | %24s | %24s | %24s |\n", "Size",
+           "Repeticiones", "Tiempo (us)", "Subestimada", "Ajustada",
+           "Sobreestimada");
 
     if (args.umbral == -1 && j == 0) {
-        printf("%15s | %12s | %24s | %24s | %24s | %24s |\n",
-               "n", "K", "t(n)", "t(n)/n^0.8",
-               "t(n)/n", "t(n)/n^1.2");
+        printf("%15s | %12s | %24s | %24s | %24s | %24s |\n", "n", "K", "t(n)",
+               "t(n)/n^0.8", "t(n)/n", "t(n)/n^1.2");
     } else {
-        printf("%15s | %12s | %24s | %24s | %24s | %24s |\n",
-               "n", "K", "t(n)", args.subestimada,
-               args.ajustada, args.sobreestimada);
+        printf("%15s | %12s | %24s | %24s | %24s | %24s |\n", "n", "K", "t(n)",
+               args.subestimada, args.ajustada, args.sobreestimada);
     }
 }
 
@@ -320,7 +315,8 @@ void printearCotas(AlgPrintArgs args,
     double t, sub = 0, sobre = 0, aj = 0;
     int i = 0, j = 0, repeticiones = 0;
     char micro[3], titulo[96];
-    const char separador[] ="-------------------------------------------------"
+    const char separador[] =
+        "-------------------------------------------------"
         "---------------------------------------------------------------------"
         "---------------------";
     for (j = 0; j < 3; j++) {
@@ -328,8 +324,10 @@ void printearCotas(AlgPrintArgs args,
             snprintf(titulo, sizeof(titulo), "%s - Inicializacion: %s",
                      args.nombre, args.inicializacion[j]);
         } else {
-            snprintf(titulo, sizeof(titulo), "%s - Inicializacion: %s"
-            " - Umbral: %d", args.nombre, args.inicializacion[j], args.umbral);
+            snprintf(titulo, sizeof(titulo),
+                     "%s - Inicializacion: %s"
+                     " - Umbral: %d",
+                     args.nombre, args.inicializacion[j], args.umbral);
         }
         printf("\n%35s[%s]\n\n", "", titulo);
         printf("%s\n", separador);
@@ -338,28 +336,29 @@ void printearCotas(AlgPrintArgs args,
         for (i = 0; i < args.size; i++) {
             t = medirTiempo(args.sort, inicializar[j], v, (int)args.n[i],
                             args.umbral, micro, &repeticiones);
-                if (args.umbral == -1 && j == 0) {
-    	    	  cotasInsercionAscendente(t, args.n[i], &sub, &sobre, &aj);
-		} else {
-    		  cotas(t, args.n[i], &sub, &sobre, &aj);
-		}
+            if (args.umbral == -1 && j == 0) {
+                cotasInsercionAscendente(t, args.n[i], &sub, &sobre, &aj);
+            } else {
+                cotas(t, args.n[i], &sub, &sobre, &aj);
+            }
             printf("%2s %12d | %12d | %24.5f | %24.10lf | "
-            "%24.10lf | %24.10lf |\n",micro, (int)args.n[i], 
-            repeticiones, t, sub, aj,  sobre);
+                   "%24.10lf | %24.10lf |\n",
+                   micro, (int)args.n[i], repeticiones, t, sub, aj, sobre);
         }
-    printf("%s\n", separador);
+        printf("%s\n", separador);
     }
-    printf("\n");free(v);
+    printf("\n");
+    free(v);
 }
 
 int main() {
-    AlgPrintArgs insercion = {
+    AlgPrintArgs Insercion = {
         .nombre = "Insercion",
         .umbral = -1,
         .inicializacion = {"Ascendente", "Descendente", "Aleatorio"},
         .subestimada = "t(n)/n^1.8",
         .sobreestimada = "t(n)/n^2.2",
-	.ajustada = "t(n)/n^2",
+        .ajustada = "t(n)/n^2",
         .sort = insercionMedicion,
         .n = {500, 1000, 2000, 4000, 8000, 16000},
         .size = 6};
@@ -368,16 +367,16 @@ int main() {
         .umbral = 1,
         .inicializacion = {"Ascendente", "Descendente", "Aleatorio"},
         .subestimada = "t(n)/(n^0.8*log(n))",
-	.sobreestimada = "t(n)/(n^1.2*log(n))",
-	.ajustada = "t(n)/(n*log(n))",
+        .sobreestimada = "t(n)/(n^1.2*log(n))",
+        .ajustada = "t(n)/(n*log(n))",
         .sort = ordenacionFusionHibrida,
         .n = {500, 1000, 2000, 4000, 8000, 16000},
         .size = 6};
 
     /* Configuracion preparada para las tablas de tiempos. */
     inicializar_semilla();
-     test();
-    printearCotas(insercion, cotasInsercion);
+    test();
+    printearCotas(Insercion, cotasInsercion);
     printearCotas(Fusion, cotasFusion);
     Fusion.umbral = 20;
     printearCotas(Fusion, cotasFusion);
