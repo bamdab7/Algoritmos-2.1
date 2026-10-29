@@ -1,0 +1,526 @@
+========================================================================================================================================================
+				                                ALGORITMOS - PRÁCTICA 2
+========================================================================================================================================================
+			                           ORDENACIÓN POR INSERCIÓN Y ORDENACIÓN POR FUSIÓN
+				                               CURSO ACADÉMICO 2026/2027
+========================================================================================================================================================
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+1.  AUTORES->
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+   o Lucía Boullosa Álvarez (lucia.boullosa@udc.es).
+   o Nerea Pena Carbajales (n.pena@udc.es).
+   o Javier Fernández Otero (javier.fernandez8@udc.es).
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+2. INTRODUCCIÓN->
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   La práctica consiste en implementar en C dos algoritmos de ordenación con distinta eficiencia que resuelven 
+   el mismo problema, así como medir y analizar sus tiempos de ejecución en tres situaciones iniciales diferentes:
+   un vector ordenado ascendentemente, otro ordenado descendentemente y otro con valores aleatorios.
+
+   Los algoritmos implementados son la ordenación por fusión (mergesort) y la ordenación por inserción. Ambos tienen 
+   como objetivo ordenar un vector de forma ascendente.
+
+   A continuación, se presenta el informe de la práctica. En primer lugar, se muestran los resultados de los tests 
+   realizados para comprobar el correcto funcionamiento de ambos algoritmos. Posteriormente, se presentan los tiempos
+   de ejecución, expresados en microsegundos, para diferentes tamaños de entrada y situaciones iniciales.
+
+   Finalmente, se muestra el estudio empírico de la complejidad de ambos algoritmos mediante el análisis de sus cotas
+   subestimadas, ajustadas y sobreestimadas.
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+3. ACLARACIONES->
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+      UNIDADES DE TIEMPO:
+    - Todos los resultados de tiempos mostrados en las tablas aparecen representados en microsegundos (µs).
+      
+      MEDICIÓN DE TIEMPOS:
+    - Para medir tiempos pequeños de forma precisa, se utiliza un umbral de confianza de 500 µs. Si la medición
+      para un valor de n es inferior a dicho umbral, la ejecución se repite 1000 veces y se calcula el tiempo
+      promedio de una ejecución, minimizando así los posibles errores.
+      
+      MEDICIONES REPETIDAS:
+    - En la tabla, los tiempos a los que se les realizó este proceso aparecen junto a un (*). Esa marca se
+      determina de forma automática durante la ejecución, comparando cada medición individual con el umbral.
+
+      MEDICIONES ANÓMALAS:
+    - A mayores, los valores considerados atípicos o anómalos serán marcados con un (+) y serán omitidos del
+      estudio del algoritmo.
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+4. CARACTERSTICAS EQUIPO->
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    - Memoria: 16,0 GiB.
+    - Procesador: 13th Gen Intel® Core™ i7-13620H × 16.
+    - Sistema operativo: Ubuntu 22.04.4 LTS.
+    - Arquitectura:64 bits.
+    
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+5. RESULTADO TEST->
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+------------------------------------------------------------
+ TEST isSorted
+------------------------------------------------------------
+
+Ascendente (n = 20)
+  Vector:    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+  Ordenado:  Si
+
+Descendente (n = 20)
+  Vector:    [19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]
+  Ordenado:  No
+
+Ultimo elemento fuera de orden (n = 20)
+  Vector:    [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,-1]
+  Ordenado:  No
+
+------------------------------------------------------------
+ TEST Insercion
+------------------------------------------------------------
+
+100 vectores aleatorios (n = 1000)
+  Correctos: 100/100
+  Resultado: Exito
+
+Aleatorio (n = 10000)
+  Antes:     [-2254,2885,3746,-229,9673,1851,-9695,1065,3773,8360,8018,3029,9574,-4545,-520,-6718,1059,1291,3111,6365,-7398,1876,7327...]
+  Despues:   [-10000,-10000,-9998,-9995,-9994,-9994,-9990,-9990,-9989,-9988,-9988,-9983,-9983,-9979,-9978,-9970,-9966,-9965,-9962,-99...]
+  Ordenado:  Si
+
+Aleatorio (n = 20)
+  Antes:     [-15,-20,-5,2,-5,-17,20,12,-5,-13,-6,9,-3,-18,1,4,-15,-7,-5,-14]
+  Despues:   [-20,-18,-17,-15,-15,-14,-13,-7,-6,-5,-5,-5,-5,-3,1,2,4,9,12,20]
+  Ordenado:  Si
+
+------------------------------------------------------------
+ TEST Fusion - Umbral: 1
+------------------------------------------------------------
+
+100 vectores aleatorios (n = 1000)
+  Correctos: 100/100
+  Resultado: Exito
+
+Aleatorio (n = 10000)
+  Antes:     [1709,-6655,8772,-6583,-7516,114,6846,7634,-7186,8,-2157,-4803,4841,-7143,2852,3263,-6519,-9881,-7823,-9822,7590,-5348,-...]
+  Despues:   [-10000,-9998,-9997,-9992,-9990,-9986,-9985,-9984,-9983,-9983,-9982,-9981,-9980,-9979,-9976,-9971,-9970,-9969,-9966,-996...]
+  Ordenado:  Si
+
+Aleatorio (n = 20)
+  Antes:     [-1,11,-17,12,-7,-10,-14,3,8,-12,1,9,11,0,-11,-9,13,-17,-1,5]
+  Despues:   [-17,-17,-14,-12,-11,-10,-9,-7,-1,-1,0,1,3,5,8,9,11,11,12,13]
+  Ordenado:  Si
+
+------------------------------------------------------------
+ TEST Fusion - Umbral: 20
+------------------------------------------------------------
+
+100 vectores aleatorios (n = 1000)
+  Correctos: 100/100
+  Resultado: Exito
+
+Aleatorio (n = 10000)
+  Antes:     [-7521,7263,-104,7605,-6312,-8104,6954,6716,3437,679,-3425,8119,2813,-9645,347,-4372,-162,-6216,-8024,-2283,8163,3259,95...]
+  Despues:   [-9998,-9993,-9993,-9993,-9992,-9990,-9990,-9989,-9989,-9987,-9986,-9981,-9979,-9978,-9975,-9972,-9972,-9971,-9968,-9967...]
+  Ordenado:  Si
+
+Aleatorio (n = 20)
+  Antes:     [14,15,17,20,2,-2,10,-10,-16,10,5,16,-1,-12,-3,-7,19,-19,-8,13]
+  Despues:   [-19,-16,-12,-10,-8,-7,-3,-2,-1,2,5,10,10,13,14,15,16,17,19,20]
+  Ordenado:  Si
+
+------------------------------------------------------------
+ TEST Fusion - Umbral: 200
+------------------------------------------------------------
+
+100 vectores aleatorios (n = 1000)
+  Correctos: 100/100
+  Resultado: Exito
+
+Aleatorio (n = 10000)
+  Antes:     [-9328,-9055,6922,-3736,2017,4341,-5368,-3968,6510,5472,5691,3156,-7401,-8277,8365,1279,9602,-5026,-5528,8281,6142,1480,...]
+  Despues:   [-9993,-9990,-9989,-9987,-9987,-9985,-9980,-9979,-9979,-9978,-9977,-9973,-9973,-9970,-9970,-9969,-9963,-9962,-9961,-9958...]
+  Ordenado:  Si
+
+Aleatorio (n = 20)
+  Antes:     [-10,-3,19,-1,12,20,12,4,1,9,-12,20,-11,11,-2,2,3,-7,2,-1]
+  Despues:   [-12,-11,-10,-7,-3,-2,-1,-1,1,2,2,3,4,9,11,12,12,19,20,20]
+  Ordenado:  Si
+
+------------------------------------------------------------
+
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+6. ANÁLISIS ALGORITMOS DE ORDENACIÓN
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+::::::ALGORITMO DE ORDENACIÓN POR INSERCIÓN::::::
+
+
+
+                                   [Insercion - Inicializacion: Ascendente]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |               t(n)/n^0.8 |                   t(n)/n |               t(n)/n^1.2 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         2000 |                  0.32800 |             0.0022735151 |             0.0006560000 |             0.0001892822 |
+ *         1000 |         1000 |                  0.64900 |             0.0025837155 |             0.0006490000 |             0.0001630214 |
+ *         2000 |         1000 |                  1.28000 |             0.0029267523 |             0.0006400000 |             0.0001399503 |
+ *         4000 |         1000 |                  2.53300 |             0.0033264975 |             0.0006332500 |             0.0001205489 |
+ *         8000 |         1000 |                  5.12100 |             0.0038626271 |             0.0006401250 |             0.0001060832 |
+ *        16000 |         1000 |                 10.22200 |             0.0044283291 |             0.0006388750 |             0.0000921705 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ 	OBSERVACIONES:
+        
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 | tiende a infinito.
+       - Cota ajustada: n | tiende a una constante.
+       - Cota sobreestimada: n^1.2| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.00064, 
+        lo que indica un comportamiento lineal, O(n).
+	 
+
+                                   [Insercion - Inicializacion: Descendente]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |               t(n)/n^1.8 |                 t(n)/n^2 |               t(n)/n^2.2 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                 51.65700 |             0.0007161157 |             0.0002066280 |             0.0000596204 |
+ *         1000 |         1000 |                224.34600 |             0.0008931375 |             0.0002243460 |             0.0000563532 |
+           2000 |            0 |                959.00000 |             0.0010963889 |             0.0002397500 |             0.0000524267 |
+           4000 |            0 |               3134.00000 |             0.0010289423 |             0.0001958750 |             0.0000372878 |
+           8000 |            0 |              14654.00000 |             0.0013816378 |             0.0002289688 |             0.0000379453 |
+          16000 |            0 |              58254.00000 |             0.0015772836 |             0.0002275547 |             0.0000328293 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+	OBSERVACIONES:
+        
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^1.8 | tiende a infinito.
+       - Cota ajustada: n² | tiende a una constante.
+       - Cota sobreestimada: n^2.2| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.00023, 
+        lo que indica un comportamiento cuadrático, O(n²).
+        
+        
+
+                                   [Insercion - Inicializacion: Aleatorio]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |               t(n)/n^1.8 |                 t(n)/n^2 |               t(n)/n^2.2 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                 24.09100 |             0.0003339710 |             0.0000963640 |             0.0000278049 |(+)
+ *         1000 |         1000 |                 83.85500 |             0.0003338328 |             0.0000838550 |             0.0000210634 |
+ *         2000 |         1000 |                322.71000 |             0.0003689423 |             0.0000806775 |             0.0000176419 |
+           4000 |            0 |               1123.00000 |             0.0003686988 |             0.0000701875 |             0.0000133613 |
+           8000 |            0 |               4847.00000 |             0.0004569946 |             0.0000757344 |             0.0000125509 |
+          16000 |            0 |              19221.00000 |             0.0005204272 |             0.0000750820 |             0.0000108321 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+        OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^1.8 | tiende a infinito.
+       - Cota ajustada: n² | tiende a una constante.
+       - Cota sobreestimada: n^2.2| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.000075,
+        lo que indica un comportamiento cuadrático, O(n²).
+        
+        
+
+::::::ALGORITMO DE ORDENACIÓN POR FUSIÓN::::::
+
+
+                                   [Fusion - Inicializacion: Ascendente - Umbral: 1]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                  5.54000 |             0.0061790259 |             0.0017828960 |             0.0005144368 |
+ *         1000 |         1000 |                 11.60800 |             0.0066899128 |             0.0016804301 |             0.0004221050 |
+ *         2000 |         1000 |                 24.31600 |             0.0073148088 |             0.0015995469 |             0.0003497768 |
+ *         4000 |         1000 |                 50.71300 |             0.0080297991 |             0.0015285959 |             0.0002909918 |
+ *         8000 |         1000 |                106.26800 |             0.0089187967 |             0.0014780471 |             0.0002449460 |
+ *        16000 |         1000 |                221.63700 |             0.0099187167 |             0.0014309732 |             0.0002064465 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+       OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia decreciente,aunque es bastente constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0015,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+                                   [Fusion - Inicializacion: Descendente - Umbral: 1]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                  5.38400 |             0.0060050317 |             0.0017326917 |             0.0004999508 |
+ *         1000 |         1000 |                 11.23100 |             0.0064726405 |             0.0016258538 |             0.0004083960 |
+ *         2000 |         1000 |                 23.57500 |             0.0070918991 |             0.0015508027 |             0.0003391178 |
+ *         4000 |         1000 |                 49.23800 |             0.0077962504 |             0.0014841363 |             0.0002825282 |
+ *         8000 |         1000 |                102.88000 |             0.0086344507 |             0.0014309245 |             0.0002371367 |
+ *        16000 |         1000 |                215.12800 |             0.0096274254 |             0.0013889486 |             0.0002003836 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+       OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia decreciente,aunque es bastente constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0014,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+                                   [Fusion - Inicializacion: Aleatorio - Umbral: 1]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                 20.50900 |             0.0228746646 |             0.0066002553 |             0.0019044375 |
+ *         1000 |         1000 |                 45.32100 |             0.0261193606 |             0.0065608867 |             0.0016480202 |
+ *         2000 |         1000 |                 99.00400 |             0.0297826670 |             0.0065126477 |             0.0014241364 |
+ *         4000 |         1000 |                215.34400 |             0.0340971557 |             0.0064909185 |             0.0012356463 |
+ *         8000 |         1000 |                470.17600 |             0.0394606482 |             0.0065395252 |             0.0010837478 |
+          16000 |            0 |                989.00000 |             0.0442598069 |             0.0063853619 |             0.0009212161 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+       OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0065,
+        lo que indica un comportamiento O(n * log(n)).
+        
+        
+        
+                                   [Fusion - Inicializacion: Ascendente - Umbral: 20]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                  2.35000 |             0.0026210669 |             0.0007562826 |             0.0002182178 |
+ *         1000 |         1000 |                  5.05800 |             0.0029150223 |             0.0007322205 |             0.0001839255 |
+ *         2000 |         1000 |                 11.28800 |             0.0033956885 |             0.0007425434 |             0.0001623738 |
+ *         4000 |         1000 |                 24.76300 |             0.0039209259 |             0.0007464086 |             0.0001420904 |
+ *         8000 |         1000 |                 54.65800 |             0.0045873037 |             0.0007602204 |             0.0001259858 |
+ *        16000 |         1000 |                120.61500 |             0.0053977721 |             0.0007787365 |             0.0001123483 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+	OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.00075,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+                                   [Fusion - Inicializacion: Descendente - Umbral: 20]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                  3.57400 |             0.0039862524 |             0.0011501932 |             0.0003318767 |
+ *         1000 |         1000 |                  7.87500 |             0.0045385134 |             0.0011400230 |             0.0002863608 |
+ *         2000 |         1000 |                 16.87600 |             0.0050766867 |             0.0011101313 |             0.0002427551 |
+ *         4000 |         1000 |                 37.48700 |             0.0059356196 |             0.0011299366 |             0.0002151008 |
+ *         8000 |         1000 |                 79.37800 |             0.0066619890 |             0.0011040428 |             0.0001829650 |
+ *        16000 |         1000 |                162.06300 |             0.0072526563 |             0.0010463407 |             0.0001509556 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+ 	OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0011,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+                                   [Fusion - Inicializacion: Aleatorio - Umbral: 20]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                 15.42600 |             0.0172053526 |             0.0049644321 |             0.0014324371 |
+ *         1000 |         1000 |                 35.02700 |             0.0201867311 |             0.0050706776 |             0.0012736966 |
+ *         2000 |         1000 |                 78.46000 |             0.0236025620 |             0.0051612292 |             0.0011286185 |
+ *         4000 |         1000 |                173.16500 |             0.0274186138 |             0.0052195552 |             0.0009936227 |
+ *         8000 |         1000 |                392.87000 |             0.0329725567 |             0.0054643012 |             0.0009055587 |
+          16000 |            0 |               1010.00000 |             0.0451996006 |             0.0065209459 |             0.0009407768 |(+)
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+	OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0052,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+
+                                   [Fusion - Inicializacion: Ascendente - Umbral: 200]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                  0.99800 |             0.0011131169 |             0.0003211787 |             0.0000926729 |(+)
+ *         1000 |         1000 |                  2.55500 |             0.0014724954 |             0.0003698741 |             0.0000929082 |
+ *         2000 |         1000 |                  6.52500 |             0.0019628692 |             0.0004292253 |             0.0000938597 |
+ *         4000 |         1000 |                 15.01800 |             0.0023779213 |             0.0004526739 |             0.0000861734 |
+ *         8000 |         1000 |                 35.63300 |             0.0029905850 |             0.0004956078 |             0.0000821335 |
+ *        16000 |         1000 |                 79.87900 |             0.0035747514 |             0.0005157293 |             0.0000744043 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+	OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia ligeramente creciente, aunque es bastante constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0005,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+
+
+
+                                   [Fusion - Inicializacion: Descendente - Umbral: 200]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                 16.58000 |             0.0184924638 |             0.0053358151 |             0.0015395960 |(+)
+ *         1000 |         1000 |                 32.81200 |             0.0189101842 |             0.0047500235 |             0.0011931520 |
+ *         2000 |         1000 |                 68.08900 |             0.0204827281 |             0.0044790076 |             0.0009794354 |
+ *         4000 |         1000 |                136.61400 |             0.0216311986 |             0.0041178316 |             0.0007838926 |
+ *         8000 |         1000 |                276.73600 |             0.0232257323 |             0.0038490311 |             0.0006378718 |
+          16000 |            0 |                542.00000 |             0.0242556272 |             0.0034993591 |             0.0005048525 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+       OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia ligeramente decreciente, aunque es bastante constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0037,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+
+
+
+                                   [Fusion - Inicializacion: Aleatorio - Umbral: 200]
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+           Size | Repeticiones |              Tiempo (us) |              Subestimada |                 Ajustada |            Sobreestimada |
+              n |            K |                     t(n) |      t(n)/(n^0.8*log(n)) |          t(n)/(n*log(n)) |      t(n)/(n^1.2*log(n)) |
+-------------------------------------------------------------------------------------------------------------------------------------------
+ *          500 |         1000 |                 15.35400 |             0.0171250476 |             0.0049412609 |             0.0014257513 |
+ *         1000 |         1000 |                 34.13200 |             0.0196709255 |             0.0049411131 |             0.0012411515 |
+ *         2000 |         1000 |                 76.46600 |             0.0230027212 |             0.0050300606 |             0.0010999355 |
+ *         4000 |         1000 |                170.33600 |             0.0269706753 |             0.0051342832 |             0.0009773898 |
+ *         8000 |         1000 |                377.72400 |             0.0317013924 |             0.0052536404 |             0.0008706475 |
+          16000 |            0 |                815.00000 |             0.0364729450 |             0.0052619514 |             0.0007591417 |
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+	OBSERVACIONES:
+        
+         
+        Las cotas seleccionadas para este algoritmo fueron:
+
+       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
+       - Cota ajustada: n * log(n) | presenta una tendencia ligeramente creciente, aunque es bastante constante.
+       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+       
+        El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0051,
+        lo que indica un comportamiento O(n * log(n)).
+        
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+7. CONCLUSIÓN->
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
+========================================================================================================================================================
+
+
+
+
+
+
+
