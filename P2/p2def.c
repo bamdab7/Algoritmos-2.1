@@ -240,7 +240,7 @@ double medirTiempo(void (*alg)(int[], int, int),
                    char* micro, int* repeticiones) {
     double ta, tb, t, t1, t2;
     int i, K = 1000;
-    *repeticiones = 0;
+    *repeticiones = 1; // en la salida aparecen filas con k=0
     strcpy(micro, " ");
     inicializar(v, n);
     ta = microsegundos();
