@@ -274,7 +274,8 @@ double medirTiempo(void (*alg)(int[], int, int),
     return t;
 }
 
-void cotasInsercion(double t, double n, double* sub, double* sob, double* aj) {
+void cotasInsercionDefault(double t, double n, double* sub, double* sob,
+                           double* aj) {
     *sub = t / pow(n, 1.8);
     *aj = t / pow(n, 2.0);
     *sob = t / pow(n, 2.2);
@@ -307,9 +308,25 @@ void imprimirCabeceraCotas(AlgPrintArgs args, int j) {
     }
 }
 
-void printearCotas(AlgPrintArgs args,
-                   void (*cotas)(double t, double n, double* sub, double* sob,
-                                 double* aj)) {
+void (*cotasInsercionSegunInit(void (*inicializacion)(int[], int)))(
+    double, double, double*, double*, double*) {
+    if (inicializacion == ascendente)
+        return cotasInsercionAscendente;
+    else
+        return cotasInsercionDefault;
+}
+
+void (*cotasSegunUmbral(int umbral, void (*inicializacion)(int[], int)))(
+    double, double, double*, double*, double*) {
+    if (umbral < 0)
+        cotasInsercionSegunInit(inicializacion);
+    else if (umbral < 20)
+        return cotasFusion;
+    else if (umbral < 200)
+        return cotasFusion;
+    return cotasFusion;
+}
+void printearCotas(AlgPrintArgs args) {
     void (*inicializar[])(int[], int) = {ascendente, descendente, aleatorio};
     int* v = malloc(sizeof(int) * (int)args.n[args.size - 1]);
     double t, sub = 0, sobre = 0, aj = 0;
@@ -336,11 +353,8 @@ void printearCotas(AlgPrintArgs args,
         for (i = 0; i < args.size; i++) {
             t = medirTiempo(args.sort, inicializar[j], v, (int)args.n[i],
                             args.umbral, micro, &repeticiones);
-            if (args.umbral == -1 && j == 0) {
-                cotasInsercionAscendente(t, args.n[i], &sub, &sobre, &aj);
-            } else {
-                cotas(t, args.n[i], &sub, &sobre, &aj);
-            }
+            cotasSegunUmbral(args.umbral, inicializar[j])(t, args.n[i], &sub,
+                                                          &sobre, &aj);
             printf("%2s %12d | %12d | %24.5f | %24.10lf | "
                    "%24.10lf | %24.10lf |\n",
                    micro, (int)args.n[i], repeticiones, t, sub, aj, sobre);
@@ -376,10 +390,10 @@ int main() {
     /* Configuracion preparada para las tablas de tiempos. */
     inicializar_semilla();
     test();
-    printearCotas(Insercion, cotasInsercion);
-    printearCotas(Fusion, cotasFusion);
+    printearCotas(Insercion);
+    printearCotas(Fusion);
     Fusion.umbral = 20;
-    printearCotas(Fusion, cotasFusion);
+    printearCotas(Fusion);
     Fusion.umbral = 200;
-    printearCotas(Fusion, cotasFusion);
+    printearCotas(Fusion);
 }

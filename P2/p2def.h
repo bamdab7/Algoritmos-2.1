@@ -74,7 +74,7 @@ double medirTiempo(void (*alg)(int[], int, int),
                    char* micro, int* repeticiones);
 
 /* Calcula t/n^1.8, t/n^2 y t/n^2.2 para insercion aleatoria o descendente. */
-void cotasInsercion(double t, double n, double* sub, double* sob, double* aj);
+void cotasInsercionDefault(double t, double n, double* sub, double* sob, double* aj);
 
 /* Calcula t/n^0.8, t/n y t/n^1.2 para insercion ascendente (mejor caso). */
 void cotasInsercionAscendente(double t, double n, double* sub, double* sob,
@@ -87,8 +87,6 @@ void cotasFusion(double t, double n, double* sub, double* sob, double* aj);
 void imprimirCabeceraCotas(AlgPrintArgs args, int j);
 
 /* Muestra una tabla de tiempos y cotas, como en la practica 1. */
-void printearCotas(AlgPrintArgs args,
-                   void (*cotas)(double t, double n, double* sub, double* sob,
-                                 double* aj));
+void printearCotas(AlgPrintArgs args);
 
 #endif /* P2_H */
