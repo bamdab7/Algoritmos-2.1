@@ -298,22 +298,50 @@ void cotasInsercionAscendente(double t, double n, double* sub, double* sob,
     *aj = t / n;
     *sob = t / pow(n, 1.2);
 }
-void cotasFusionU1(double t, double n, double* sub, double* sob, double* aj) {
+void cotasFusionU1DF(double t, double n, double* sub, double* sob, double* aj) {
+    *sub = t / (pow(n, 0.8) * log(n));
+    *aj = t / ( pow(n,0.95) * log(n));
+    *sob = t / (pow(n, 1.1) * log(n));
+}
+void cotasFusionU1Rand(double t, double n, double* sub, double* sob, double* aj) {
     *sub = t / (pow(n, 0.8) * log(n));
     *aj = t / (n * log(n));
     *sob = t / (pow(n, 1.2) * log(n));
 }
-void cotasFusionU20(double t, double n, double* sub, double* sob, double* aj) {
-    *sub = t / (pow(n, 0.8) * log(n));
-    *aj = t / (n * log(n));
-    *sob = t / (pow(n, 1.2) * log(n));
+void cotasFusionU20ASC(double t, double n, double* sub, double* sob, double* aj) {
+    *sub = t / (pow(n, 0.95) * log(n));
+    *aj = t / ( pow(n,1.03) * log(n));
+    *sob = t / (pow(n, 1.1) * log(n));
+}
+void cotasFusionU20DSC(double t, double n, double* sub, double* sob, double* aj) {
+    *sub = t / (pow(n, 0.9) * log(n));
+    *aj = t / ( pow(n,1) * log(n));
+    *sob = t / (pow(n, 1.1) * log(n));
 }
 
-void cotasFusionU200(double t, double n, double* sub, double* sob,
+void cotasFusionU20RND(double t, double n, double* sub, double* sob, double* aj) {
+    *sub = t / (pow(n, 0.9) * log(n));
+    *aj = t / (pow(n,1.02) * log(n));
+    *sob = t / (pow(n, 1.1) * log(n));
+}
+
+void cotasFusionU200ASC(double t, double n, double* sub, double* sob,
+                     double* aj) {
+    *sub = t / (pow(n, 1) * log(n));
+    *aj = t / (pow(n,1.15) * log(n));
+    *sob = t / (pow(n, 1.2) * log(n));
+}
+void cotasFusionU200DSC(double t, double n, double* sub, double* sob,
                      double* aj) {
     *sub = t / (pow(n, 0.8) * log(n));
-    *aj = t / (n * log(n));
-    *sob = t / (pow(n, 1.2) * log(n));
+    *aj = t / (pow(n,0.95) * log(n));
+    *sob = t / (pow(n, 1.1)* log(n));
+}
+void cotasFusionU200RND(double t, double n, double* sub, double* sob,
+                     double* aj) {
+    *sub = t / (pow(n, 0.8) * log(n));
+    *aj = t / (pow(n,1.0) * log(n));
+    *sob = t / (pow(n, 1.1) * log(n));
 }
 
 void stringsCotasInsercionDefault(char cotas[][40]) {
@@ -328,7 +356,7 @@ void stringsCotasInsercionAscendente(char cotas[][40]) {
     strcpy(cotas[2], "t(n)/n^1.2");
 }
 
-void stringsCotasFusionU1(char cotas[][40]) {
+void stringscotasFusionU1DF(char cotas[][40]) {
     strcpy(cotas[0], "t(n)/(n^0.8*ln(n))");
     strcpy(cotas[1], "t(n)/(n*ln(n))");
     strcpy(cotas[2], "t(n)/(n^1.2*ln(n))");
@@ -403,40 +431,45 @@ void printearCotas(AlgPrintArgs args,
     free(v);
 }
 
-void imprimirTablasFusion(AlgPrintArgs args,
-                          void (*calcularCotas)(double, double, double*, double*, double*),
-                          void (*rellenarCotas)(char[][40])) {
-    printearCotas(args, calcularCotas, ascendente, rellenarCotas);
-    printearCotas(args, calcularCotas, descendente, rellenarCotas);
-    printearCotas(args, calcularCotas, aleatorio, rellenarCotas);
-}
 
 int main(void) {
+    int v[1000];
+    int i;
     AlgPrintArgs Insercion = {
         .nombre = "Insercion",
         .umbral = -1,
         .sort = genericrdenacionInsercion,
-        .n = {500, 1000, 2000, 4000, 8000, 16000},
-        .size = 6};
+        .n = {500, 1000, 2000, 4000, 8000, 16000,32000,64000},
+        .size = 8};
     AlgPrintArgs Fusion = {
         .nombre = "Fusion",
         .umbral = 1,
         .sort = ordenacionFusionHibrida,
-        .n = {500, 1000, 2000, 4000, 8000, 16000},
-        .size = 6};
+        .n = {500, 1000, 2000, 4000, 8000, 16000,32000,64000},
+        .size = 8};
     inicializar_semilla();
-    test();
+    // test();
+       
+    for (i = 0; i < 10000; i++) {
+        aleatorio(v, 1000);
+        ordenacionFusionHibrida(v, 1000, Fusion.umbral);
+    }
     printearCotas(Insercion, cotasInsercionAscendente, ascendente,
                   stringsCotasInsercionAscendente);
     printearCotas(Insercion, cotasInsercionDefault, descendente,
                   stringsCotasInsercionDefault);
     printearCotas(Insercion, cotasInsercionDefault, aleatorio,
                   stringsCotasInsercionDefault);
-
-    imprimirTablasFusion(Fusion, cotasFusionU1, stringsCotasFusionU1);
+    printearCotas(Fusion, cotasFusionU1DF, ascendente, stringscotasFusionU1DF);
+    printearCotas(Fusion, cotasFusionU1DF, descendente, stringscotasFusionU1DF);
+    printearCotas(Fusion, cotasFusionU1Rand, aleatorio, stringscotasFusionU1DF);
     Fusion.umbral = 20;
-    imprimirTablasFusion(Fusion, cotasFusionU20, stringsCotasFusionU20);
-    Fusion.umbral = 200;
-    imprimirTablasFusion(Fusion, cotasFusionU200, stringsCotasFusionU200);
+    printearCotas(Fusion, cotasFusionU20ASC, ascendente, stringsCotasFusionU20);
+    printearCotas(Fusion, cotasFusionU20DSC, descendente, stringsCotasFusionU20);
+   printearCotas(Fusion, cotasFusionU20RND, aleatorio, stringsCotasFusionU20);
+     Fusion.umbral = 200;
+     printearCotas(Fusion, cotasFusionU200ASC, ascendente, stringsCotasFusionU200);
+     printearCotas(Fusion, cotasFusionU200DSC, descendente, stringsCotasFusionU200);
+    printearCotas(Fusion, cotasFusionU200RND, aleatorio, stringsCotasFusionU200);
     return 0;
 }
