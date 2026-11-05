@@ -6,9 +6,8 @@
 /* Guarda el nombre, la inicializacion, las cotas y los tamaños de entrada. */
 typedef struct {
     char nombre[25];
-    char inicializacion[3]
-                       [12]; /* "Aleatorio", "Ascendente" o "Descendente". */
-    int umbral;              /* Umbral de fusion; no se usa en insercion. */
+    char inicializacion[12]; /* Nombre de la inicializacion de esta tabla. */
+    int umbral; /* Umbral de fusion; no se usa en insercion. */
     char subestimada[25];
     char sobreestimada[25];
     char ajustada[25];
@@ -88,9 +87,14 @@ void cotasFusionU20(double t, double n, double* sub, double* sob, double* aj);
 void cotasFusionU200(double t, double n, double* sub, double* sob, double* aj);
 
 /* Imprime las dos filas de cabecera de la tabla de cotas. */
-void imprimirCabeceraCotas(AlgPrintArgs args, int j);
+void imprimirCabeceraCotas(AlgPrintArgs args);
 
-/* Muestra una tabla de tiempos y cotas, como en la practica 1. */
-void printearCotas(AlgPrintArgs args);
+/* Muestra una unica tabla usando las funciones recibidas.
+ * Los textos de args deben corresponder a las funciones elegidas.
+ * calcularCotas recibe las salidas en orden: subestimada, sobreestimada, ajustada.
+ */
+void printearCotas(AlgPrintArgs args,
+                   void (*calcularCotas)(double, double, double*, double*, double*),
+                   void (*inicializar)(int[], int));
 
 #endif /* P2_H */
