@@ -316,36 +316,80 @@ void cotasFusionU200(double t, double n, double* sub, double* sob,
     *sob = t / (pow(n, 1.2) * log(n));
 }
 
-void imprimirCabeceraCotas(AlgPrintArgs args) {
+void stringsCotasInsercionDefault(char cotas[][40]) {
+    strcpy(cotas[0], "t(n)/n^1.8");
+    strcpy(cotas[1], "t(n)/n^2");
+    strcpy(cotas[2], "t(n)/n^2.2");
+}
+
+void stringsCotasInsercionAscendente(char cotas[][40]) {
+    strcpy(cotas[0], "t(n)/n^0.8");
+    strcpy(cotas[1], "t(n)/n");
+    strcpy(cotas[2], "t(n)/n^1.2");
+}
+
+void stringsCotasFusionU1(char cotas[][40]) {
+    strcpy(cotas[0], "t(n)/(n^0.8*ln(n))");
+    strcpy(cotas[1], "t(n)/(n*ln(n))");
+    strcpy(cotas[2], "t(n)/(n^1.2*ln(n))");
+}
+
+void stringsCotasFusionU20(char cotas[][40]) {
+    strcpy(cotas[0], "t(n)/(n^0.8*ln(n))");
+    strcpy(cotas[1], "t(n)/(n*ln(n))");
+    strcpy(cotas[2], "t(n)/(n^1.2*ln(n))");
+}
+
+void stringsCotasFusionU200(char cotas[][40]) {
+    strcpy(cotas[0], "t(n)/(n^0.8*ln(n))");
+    strcpy(cotas[1], "t(n)/(n*ln(n))");
+    strcpy(cotas[2], "t(n)/(n^1.2*ln(n))");
+}
+
+const char* nombreInicializacion(void (*inicializar)(int[], int)) {
+    if (inicializar == ascendente)
+        return "Ascendente";
+    if (inicializar == descendente)
+        return "Descendente";
+    if (inicializar == aleatorio)
+        return "Aleatorio";
+    return "Personalizada";
+}
+
+void imprimirCabeceraCotas(char cotas[][40]) {
     printf("%15s | %12s | %18s | %18s | %18s | %18s |\n", "Size",
            "Repeticiones", "Tiempo (us)", "Subestimada", "Ajustada",
            "Sobreestimada");
     printf("%15s | %12s | %18s | %18s | %18s | %18s |\n", "n", "K", "t(n)",
-           args.subestimada, args.ajustada, args.sobreestimada);
+           cotas[0], cotas[1], cotas[2]);
 }
 
 void printearCotas(AlgPrintArgs args,
                    void (*calcularCotas)(double, double, double*, double*, double*),
-                   void (*inicializar)(int[], int)) {
+                   void (*inicializar)(int[], int),
+                   void (*rellenarCotas)(char[][40])) {
     int* v = malloc(sizeof(int) * (int)args.n[args.size - 1]);
     double t, sub = 0, sobre = 0, aj = 0;
     int i, repeticiones = 0;
-    char micro[3], titulo[96];
+    char micro[3], titulo[96], cotas[3][40];
     const char separador[] =
         "----------------------------------------------------------"
         "----------------------------------------------------------";
 
+    const char* nombreInit = nombreInicializacion(inicializar);
+    rellenarCotas(cotas);
+
     if (args.umbral < 0) {
         snprintf(titulo, sizeof(titulo), "%s - Inicializacion: %s",
-                 args.nombre, args.inicializacion);
+                 args.nombre, nombreInit);
     } else {
         snprintf(titulo, sizeof(titulo),
                  "%s - Inicializacion: %s - Umbral: %d",
-                 args.nombre, args.inicializacion, args.umbral);
+                 args.nombre, nombreInit, args.umbral);
     }
     printf("\n%35s[%s]\n\n", "", titulo);
     printf("%s\n", separador);
-    imprimirCabeceraCotas(args);
+    imprimirCabeceraCotas(cotas);
     printf("%s\n", separador);
     for (i = 0; i < args.size; i++) {
         t = medirTiempo(args.sort, inicializar, v, (int)args.n[i],
@@ -359,63 +403,40 @@ void printearCotas(AlgPrintArgs args,
     free(v);
 }
 
+void imprimirTablasFusion(AlgPrintArgs args,
+                          void (*calcularCotas)(double, double, double*, double*, double*),
+                          void (*rellenarCotas)(char[][40])) {
+    printearCotas(args, calcularCotas, ascendente, rellenarCotas);
+    printearCotas(args, calcularCotas, descendente, rellenarCotas);
+    printearCotas(args, calcularCotas, aleatorio, rellenarCotas);
+}
+
 int main(void) {
     AlgPrintArgs Insercion = {
         .nombre = "Insercion",
         .umbral = -1,
-        .inicializacion = "Ascendente",
-        .subestimada = "t(n)/n^0.8",
-        .ajustada = "t(n)/n",
-        .sobreestimada = "t(n)/n^1.2",
         .sort = genericrdenacionInsercion,
         .n = {500, 1000, 2000, 4000, 8000, 16000},
         .size = 6};
     AlgPrintArgs Fusion = {
         .nombre = "Fusion",
         .umbral = 1,
-        .inicializacion = "Ascendente",
-        .subestimada = "t(n)/(n^0.8*ln(n))",
-        .ajustada = "t(n)/(n*ln(n))",
-        .sobreestimada = "t(n)/(n^1.2*ln(n))",
         .sort = ordenacionFusionHibrida,
         .n = {500, 1000, 2000, 4000, 8000, 16000},
         .size = 6};
-
     inicializar_semilla();
+    test();
+    printearCotas(Insercion, cotasInsercionAscendente, ascendente,
+                  stringsCotasInsercionAscendente);
+    printearCotas(Insercion, cotasInsercionDefault, descendente,
+                  stringsCotasInsercionDefault);
+    printearCotas(Insercion, cotasInsercionDefault, aleatorio,
+                  stringsCotasInsercionDefault);
 
-    /* Cada llamada imprime una sola tabla. */
-    printearCotas(Insercion, cotasInsercionAscendente, ascendente);
-
-    strcpy(Insercion.subestimada, "t(n)/n^1.8");
-    strcpy(Insercion.ajustada, "t(n)/n^2");
-    strcpy(Insercion.sobreestimada, "t(n)/n^2.2");
-    strcpy(Insercion.inicializacion, "Descendente");
-    printearCotas(Insercion, cotasInsercionDefault, descendente);
-    strcpy(Insercion.inicializacion, "Aleatorio");
-    printearCotas(Insercion, cotasInsercionDefault, aleatorio);
-
-    /* Se elige explicitamente la funcion de cotas para cada umbral. */
-    strcpy(Fusion.inicializacion, "Ascendente");
-    printearCotas(Fusion, cotasFusionU1, ascendente);
-    strcpy(Fusion.inicializacion, "Descendente");
-    printearCotas(Fusion, cotasFusionU1, descendente);
-    strcpy(Fusion.inicializacion, "Aleatorio");
-    printearCotas(Fusion, cotasFusionU1, aleatorio);
-
+    imprimirTablasFusion(Fusion, cotasFusionU1, stringsCotasFusionU1);
     Fusion.umbral = 20;
-    strcpy(Fusion.inicializacion, "Ascendente");
-    printearCotas(Fusion, cotasFusionU20, ascendente);
-    strcpy(Fusion.inicializacion, "Descendente");
-    printearCotas(Fusion, cotasFusionU20, descendente);
-    strcpy(Fusion.inicializacion, "Aleatorio");
-    printearCotas(Fusion, cotasFusionU20, aleatorio);
-
+    imprimirTablasFusion(Fusion, cotasFusionU20, stringsCotasFusionU20);
     Fusion.umbral = 200;
-    strcpy(Fusion.inicializacion, "Ascendente");
-    printearCotas(Fusion, cotasFusionU200, ascendente);
-    strcpy(Fusion.inicializacion, "Descendente");
-    printearCotas(Fusion, cotasFusionU200, descendente);
-    strcpy(Fusion.inicializacion, "Aleatorio");
-    printearCotas(Fusion, cotasFusionU200, aleatorio);
+    imprimirTablasFusion(Fusion, cotasFusionU200, stringsCotasFusionU200);
     return 0;
 }

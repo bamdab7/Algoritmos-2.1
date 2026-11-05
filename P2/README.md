@@ -1,28 +1,32 @@
 # P2 — una tabla por llamada
 
-Compilar y ejecutar desde esta carpeta:
+Compilar y ejecutar:
 
 ```sh
 make
 ./test
 ```
 
-`printearCotas(args, calcularCotas, inicializar)` imprime una sola tabla.
-`args` contiene el algoritmo, el umbral, los tamaños y los textos de esa tabla.
-Por ejemplo:
+`printearCotas(args, calcularCotas, inicializar, rellenarCotas)` imprime una tabla.
+`args` contiene el nombre, el algoritmo, el umbral y los tamaños de entrada.
+Las otras funciones calculan las cotas, inicializan el vector y rellenan los
+textos de cabecera, respectivamente. Por ejemplo:
 
 ```c
-strcpy(Fusion.inicializacion, "Aleatorio");
 Fusion.umbral = 20;
-printearCotas(Fusion, cotasFusionU20, aleatorio);
+printearCotas(Fusion, cotasFusionU20, aleatorio, stringsCotasFusionU20);
 ```
 
-Al cambiar la función de cotas, ajusta también `subestimada`, `ajustada` y
-`sobreestimada` si las fórmulas cambian. `inicializacion` es el nombre que
-aparece en el título; la función recibida determina cómo se rellena el vector.
+Cada función `stringsCotas...` rellena `char cotas[3][40]` en orden:
+subestimada, ajustada y sobreestimada. Sus textos deben coincidir con las
+fórmulas de la función de cálculo elegida.
 
-La función de cotas conserva el orden de parámetros del proyecto original:
+El nombre de inicialización se obtiene a partir de la función recibida:
+`ascendente`, `descendente` o `aleatorio`; para otras se muestra `Personalizada`.
+
+La función de cálculo conserva el orden de parámetros del proyecto original:
 `(t, n, &subestimada, &sobreestimada, &ajustada)`.
 
-El `main` incluye doce llamadas independientes: tres para inserción y nueve
-para fusión (tres inicializaciones por cada umbral: 1, 20 y 200).
+`imprimirTablasFusion` agrupa tres llamadas a `printearCotas`, una por
+inicialización. El programa imprime doce tablas: tres de inserción y nueve
+de fusión (tres por cada umbral: 1, 20 y 200).

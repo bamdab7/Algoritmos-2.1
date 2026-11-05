@@ -3,14 +3,10 @@
 
 #include <stdbool.h>
 
-/* Guarda el nombre, la inicializacion, las cotas y los tamaños de entrada. */
+/* Guarda el nombre, el algoritmo, el umbral y los tamaños de entrada. */
 typedef struct {
     char nombre[25];
-    char inicializacion[12]; /* Nombre de la inicializacion de esta tabla. */
     int umbral; /* Umbral de fusion; no se usa en insercion. */
-    char subestimada[25];
-    char sobreestimada[25];
-    char ajustada[25];
     void (*sort)(int v[], int n, int umbral);
     double n[10];
     int size;
@@ -86,15 +82,30 @@ void cotasFusionU1(double t, double n, double* sub, double* sob, double* aj);
 void cotasFusionU20(double t, double n, double* sub, double* sob, double* aj);
 void cotasFusionU200(double t, double n, double* sub, double* sob, double* aj);
 
-/* Imprime las dos filas de cabecera de la tabla de cotas. */
-void imprimirCabeceraCotas(AlgPrintArgs args);
+/* Rellenan subestimada, ajustada y sobreestimada, en ese orden. */
+void stringsCotasInsercionDefault(char cotas[][40]);
+void stringsCotasInsercionAscendente(char cotas[][40]);
+void stringsCotasFusionU1(char cotas[][40]);
+void stringsCotasFusionU20(char cotas[][40]);
+void stringsCotasFusionU200(char cotas[][40]);
 
-/* Muestra una unica tabla usando las funciones recibidas.
- * Los textos de args deben corresponder a las funciones elegidas.
+/* Devuelve el nombre asociado a la funcion de inicializacion. */
+const char* nombreInicializacion(void (*inicializar)(int[], int));
+
+/* Imprime las dos filas de cabecera de la tabla de cotas. */
+void imprimirCabeceraCotas(char cotas[][40]);
+
+/* Imprime una tabla; rellenarCotas proporciona los textos de la cabecera.
  * calcularCotas recibe las salidas en orden: subestimada, sobreestimada, ajustada.
  */
 void printearCotas(AlgPrintArgs args,
                    void (*calcularCotas)(double, double, double*, double*, double*),
-                   void (*inicializar)(int[], int));
+                   void (*inicializar)(int[], int),
+                   void (*rellenarCotas)(char[][40]));
+
+/* Imprime una tabla por cada inicializacion para la configuracion recibida. */
+void imprimirTablasFusion(AlgPrintArgs args,
+                          void (*calcularCotas)(double, double, double*, double*, double*),
+                          void (*rellenarCotas)(char[][40]));
 
 #endif /* P2_H */
