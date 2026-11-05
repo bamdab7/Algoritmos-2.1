@@ -70,24 +70,35 @@ double medirTiempo(void (*alg)(int[], int, int),
                    char* micro, int* repeticiones);
 
 /* Calcula t/n^1.8, t/n^2 y t/n^2.2 para insercion aleatoria o descendente. */
-void cotasInsercionDefault(double t, double n, double* sub, double* sob,
+void cInsDef(double t, double n, double* sub, double* sob,
                            double* aj);
 
 /* Calcula t/n^0.8, t/n y t/n^1.2 para insercion ascendente (mejor caso). */
-void cotasInsercionAscendente(double t, double n, double* sub, double* sob,
+void cInsAsc(double t, double n, double* sub, double* sob,
                               double* aj);
 
-/* Calcula t/(n^0.8*log n), t/(n*log n) y t/(n^1.2*log n) para fusion. */
-void cotasFusionU1(double t, double n, double* sub, double* sob, double* aj);
-void cotasFusionU20(double t, double n, double* sub, double* sob, double* aj);
-void cotasFusionU200(double t, double n, double* sub, double* sob, double* aj);
+/* Cotas de fusion: umbral y caso (Def, Asc, Dsc o Rnd). */
+void cF1Def(double t, double n, double* sub, double* sob, double* aj);
+void cF1Rnd(double t, double n, double* sub, double* sob, double* aj);
+void cF20Asc(double t, double n, double* sub, double* sob, double* aj);
+void cF20Dsc(double t, double n, double* sub, double* sob, double* aj);
+void cF20Rnd(double t, double n, double* sub, double* sob, double* aj);
+void cF200Asc(double t, double n, double* sub, double* sob, double* aj);
+void cF200Dsc(double t, double n, double* sub, double* sob, double* aj);
+void cF200Rnd(double t, double n, double* sub, double* sob, double* aj);
 
-/* Rellenan subestimada, ajustada y sobreestimada, en ese orden. */
-void stringsCotasInsercionDefault(char cotas[][40]);
-void stringsCotasInsercionAscendente(char cotas[][40]);
-void stringsCotasFusionU1(char cotas[][40]);
-void stringsCotasFusionU20(char cotas[][40]);
-void stringsCotasFusionU200(char cotas[][40]);
+/* Prefijos c: calcular cotas; s: strings de las cotas.
+ * Rellenan subestimada, ajustada y sobreestimada, en ese orden. */
+void sInsDef(char cotas[][40]);
+void sInsAsc(char cotas[][40]);
+void sF1Def(char cotas[][40]);
+void sF1Rnd(char cotas[][40]);
+void sF20Asc(char cotas[][40]);
+void sF20Dsc(char cotas[][40]);
+void sF20Rnd(char cotas[][40]);
+void sF200Asc(char cotas[][40]);
+void sF200Dsc(char cotas[][40]);
+void sF200Rnd(char cotas[][40]);
 
 /* Devuelve el nombre asociado a la funcion de inicializacion. */
 const char* nombreInicializacion(void (*inicializar)(int[], int));
