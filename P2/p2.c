@@ -387,6 +387,8 @@ void printearCotas(AlgPrintArgs args) {
 }
 
 int main() {
+    int i = 0;
+    int v[1000];
     AlgPrintArgs Insercion = {
         .nombre = "Insercion",
         .umbral = -1,
@@ -410,11 +412,15 @@ int main() {
 
     /* Configuracion preparada para las tablas de tiempos. */
     inicializar_semilla();
-    test();
+    //test();
+    for(i = 0; i<1000; i ++){
+     aleatorio(v,1000);
+     ordenacionInsercion(v,1000);
+    }
     printearCotas(Insercion);
-    printearCotas(Fusion);
+   //printearCotas(Fusion);
     Fusion.umbral = 20;
-    printearCotas(Fusion);
+    //printearCotas(Fusion);
     Fusion.umbral = 200;
-    printearCotas(Fusion);
+    //printearCotas(Fusion);
 }
