@@ -113,10 +113,4 @@ void printearCotas(AlgPrintArgs args,
                    void (*calcularCotas)(double, double, double*, double*, double*),
                    void (*inicializar)(int[], int),
                    void (*rellenarCotas)(char[][40]));
-
-/* Imprime una tabla por cada inicializacion para la configuracion recibida. */
-void imprimirTablasFusion(AlgPrintArgs args,
-                          void (*calcularCotas)(double, double, double*, double*, double*),
-                          void (*rellenarCotas)(char[][40]));
-
 #endif /* P2_H */

@@ -477,6 +477,7 @@ int main(void) {
         .n = {500, 1000, 2000, 4000, 8000, 16000, 32000, 64000},
         .size = 8};
     inicializar_semilla();
+    test();
     for (i = 0; i < 10000; i++) {
         aleatorio(v, 1000);
         ordenacionFusionHibrida(v, 1000, Fusion.umbral);
