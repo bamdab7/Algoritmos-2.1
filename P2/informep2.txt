@@ -86,6 +86,9 @@
       - Cota subestimada: n^0.8 | tiende a infinito.
       - Cota ajustada: n | tiende a una constante.
       - Cota sobreestimada: n^1.2| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.00303, 
+      lo que indica un comportamiento lineal, O(n).
       
 
                                    [Insercion - Inicializacion: Descendente]
@@ -112,6 +115,9 @@
       - Cota subestimada: n^1.8 | tiende a infinito.
       - Cota ajustada: n² | tiende a una constante.
       - Cota sobreestimada: n^2.2| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.000991, 
+      lo que indica un comportamiento cuadrático, O(n²).
         
 
                                    [Insercion - Inicializacion: Aleatorio]
@@ -140,6 +146,8 @@
       - Cota ajustada: n² | tiende a una constante.
       - Cota sobreestimada: n^2.2| tiende a 0.
       
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.000493,
+      lo que indica un comportamiento cuadrático, O(n²).
         
         
 ::::::ALGORITMO DE ORDENACIÓN POR FUSIÓN::::::
@@ -168,6 +176,9 @@
       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
       - Cota ajustada: n^0.95 * log(n) | tiende a una constante.
       - Cota sobreestimada: n^1.1 * log(n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0129,
+      lo que indica un comportamiento O(n^0.95 * log(n)).
         
 
                                 [Fusion - Inicializacion: Descendente - Umbral: 1]
@@ -194,6 +205,9 @@
       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
       - Cota ajustada: n^0.95 * log(n) | tiende a una constante.
       - Cota sobreestimada: n^1.1 * log(n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0132,
+      lo que indica un comportamiento O(n^0.95 * log(n)).
       
 
                                 [Fusion - Inicializacion: Aleatorio - Umbral: 1]
@@ -220,6 +234,9 @@
       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
       - Cota ajustada: n * log(n) | tiende a una constante.
       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0199,
+      lo que indica un comportamiento O(n * log(n)).
         
         
                                 [Fusion - Inicializacion: Ascendente - Umbral: 20]
@@ -246,6 +263,9 @@
       - Cota subestimada: n^0.95 * log(n) | tiende a infinito.
       - Cota ajustada: n^1.03 * log(n) | presenta una tendencia constante.
       - Cota sobreestimada: n^1.1 * log(n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.00402,
+      lo que indica un comportamiento O(n^1.03 * log(n)).
       
 
                                 [Fusion - Inicializacion: Descendente - Umbral: 20]
@@ -272,6 +292,9 @@
       - Cota subestimada: n^0.9 * log(n) | tiende a infinito.
       - Cota ajustada: n * log(n) | tiende a una constante.
       - Cota sobreestimada: n^1.1 * log(n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.00731,
+      lo que indica un comportamiento O(n * log(n)).
         
 
                                 [Fusion - Inicializacion: Aleatorio - Umbral: 20]
@@ -298,6 +321,9 @@
       - Cota subestimada: n^0.9 * log(n) | tiende a infinito.
       - Cota ajustada: n^1.02 * log(n) | tiende a una constante.
       - Cota sobreestimada: n^1.1 * log(n)| tiende a 0.
+            
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0133,
+      lo que indica un comportamiento O(n^1.02 * log(n)).
       
 
                                 [Fusion - Inicializacion: Ascendente - Umbral: 200]
@@ -324,7 +350,9 @@
       - Cota subestimada: n * log(n) | tiende a infinito.
       - Cota ajustada: n^1.15 * log(n) | presenta una tendencia ligeramente creciente, aunque es bastante constante.
       - Cota sobreestimada: n^1.2 * log(n)| tiende a 0.
-        
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.000809,
+      lo que indica un comportamiento O(n^1.15 * log(n)).  
 
                                 [Fusion - Inicializacion: Descendente - Umbral: 200]
 
@@ -351,6 +379,9 @@
       - Cota subestimada: n^0.8 * log(n) | tiende a infinito.
       - Cota ajustada: n^0.95 * log(n) | presenta una tendencia ligeramente decreciente, aunque es bastante constante.
       - Cota sobreestimada: n^1.1 * log(n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0302,
+      lo que indica un comportamiento O(n^0.95 * log(n)).
             
 
                                 [Fusion - Inicializacion: Aleatorio - Umbral: 200]
@@ -377,6 +408,9 @@
       - Cota subestimada: n^0.8 * log (n) | tiende a infinito.
       - Cota ajustada: n * log(n) | tiende a una constante.
       - Cota sobreestimada: n^1.1 * log (n)| tiende a 0.
+
+      El cociente de la cota ajustada se mantiene relativamente estable, alrededor de 0.0186,
+      lo que indica un comportamiento O(n * log(n)).
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
