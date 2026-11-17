@@ -1,42 +1,52 @@
-void inicializarMonticulo(monticulo *m, int tamMax)
-{ /* vacío */
+#include "p2.h"
+#include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/time.h>
+#include <time.h>
+
+typedef struct {
+    int u, v, peso;
+} arista;
+
+typedef struct {
+    int ultimo; /* -1 si el montículo está vacío */
+    int tamMax;
+    arista* vector;
+} monticulo;
+
+void inicializarMonticulo(monticulo* m, int tamMax) { /* vacío */
     m->ultimo = -1;
     m->tamMax = tamMax;
     m->vector = malloc(tamMax * sizeof(arista));
 }
-void liberarMonticulo(monticulo *m)
-{
+void liberarMonticulo(monticulo* m) {
     free(m->vector);
     m->vector = NULL;
     m->ultimo = -1;
 }
-int monticuloVacio(monticulo *m)
-{
+int monticuloVacio(monticulo* m) {
     return m->ultimo == -1;
 }
-static void intercambiar(arista *a, arista *b)
-{
+static void intercambiar(arista* a, arista* b) {
     arista tmp = *a;
     *a = *b;
     *b = tmp;
 }
-static void flotar(monticulo *m, int i)
-{
-    while (i > 0 && m->vector[(i - 1) / 2].peso > m->vector[i].peso)
-    {
+static void flotar(monticulo* m, int i) {
+    while (i > 0 && m->vector[(i - 1) / 2].peso > m->vector[i].peso) {
         intercambiar(&m->vector[(i - 1) / 2], &m->vector[i]);
         i = (i - 1) / 2;
     }
 }
-static void hundir(monticulo *m, int i)
-{
+static void hundir(monticulo* m, int i) {
     /* COMPLETAR: Hundir de teoría para un montículo de mínimos
     cuyo vector empieza en la posición 0 */
 }
-void insertar(arista x, monticulo *m)
-{
-    if (m->ultimo == m->tamMax - 1)
-    {
+void insertar(arista x, monticulo* m) {
+    if (m->ultimo == m->tamMax - 1) {
         fprintf(stderr, "Error: montículo lleno\n");
         exit(EXIT_FAILURE);
     }
@@ -44,11 +54,9 @@ void insertar(arista x, monticulo *m)
     m->vector[m->ultimo] = x;
     flotar(m, m->ultimo);
 }
-arista eliminarMin(monticulo *m)
-{
+arista eliminarMin(monticulo* m) {
     arista x;
-    if (monticuloVacio(m))
-    {
+    if (monticuloVacio(m)) {
         fprintf(stderr, "Error: montículo vacío\n");
         exit(EXIT_FAILURE);
     }
